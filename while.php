@@ -37,13 +37,14 @@ echo "2^$i = " . 2**$i;
 <?php
 $number = 6;
 $notaus = 1000;
-echo "$number → ";
+echo "$number";
 while($number != 1 && --$notaus > 0) {
+  echo " → ";
   if(!($number % 2))
     $number = $number / 2;
   else
   $number = $number * 3 + 1;
-  echo $number . " → ";
+  echo $number;
 }
 ?>
 
