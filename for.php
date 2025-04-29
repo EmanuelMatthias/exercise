@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For Uebung</title>
 </head>
-<body>
+<body style="padding:20px;">
 
-Aufgabe 1<br><br>
+<h1>FOR Uebung</h1>
 
-<table>
+<h3>Aufgabe 1</h3><br>
+
+<table style="border-collapse: collapse;">
 <?php
 for ( $i = 1; $i <= 20; $i++) {
   echo (!(($i-1) % 5 ))?"\t<tr>\n":"";
-  echo "\t\t<td>$i</td>\n";
+  echo "\t\t<td style=\"border: 1px solid black; text-align:right;\">$i</td>\n";
   echo (!($i % 5 ))?"\t<tr>\n":"";
 }
 ?>
 </table>
-
-Aufgabe 2<br><br>
+<br>
+<h3>Aufgabe 2</h3><br>
 
 <?php
 $sum = 0;
@@ -39,8 +41,8 @@ for($i=2;$i<=10;$i+=2){
 }
 echo "Summe: $sum<br>\n";
 ?>
-
-Aufgabe 3<br><br>
+<br>
+<h3>Aufgabe 3</h3><br>
 
 <table>
 <?php
