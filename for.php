@@ -9,7 +9,7 @@
 
 <h1>FOR Uebung</h1>
 
-<h3>Aufgabe 1</h3><br>
+<h3>Aufgabe 1</h3>
 
 <table style="border-collapse: collapse;">
 <?php
@@ -21,7 +21,7 @@ for ( $i = 1; $i <= 20; $i++) {
 ?>
 </table>
 <br>
-<h3>Aufgabe 2</h3><br>
+<h3>Aufgabe 2</h3>
 
 <?php
 $sum = 0;
@@ -42,7 +42,7 @@ for($i=2;$i<=10;$i+=2){
 echo "Summe: $sum<br>\n";
 ?>
 <br>
-<h3>Aufgabe 3</h3><br>
+<h3>Aufgabe 3</h3>
 
 <table>
 <?php

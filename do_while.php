@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Do While</title>
+  <title>Do While Uebung</title>
 </head>
 <body>
   
 <h1>Do While Uebung</h1>
 
-<h3>Aufgabe 1</h3><br>
+<h3>Aufgabe 1</h3>
 
 <?php
 $number = 1;
@@ -19,7 +19,7 @@ do {
 } while ($number <= 5);
 ?>
 
-<h3>Aufgabe 2</h3><br>
+<h3>Aufgabe 2</h3>
 
 <?php
 $i = 0;
@@ -34,7 +34,7 @@ do {
 } while (++$i < $end);
 ?>
 
-<h3>Aufgabe 3</h3><br>
+<h3>Aufgabe 3</h3>
 
 <?php
 $i = 1;
