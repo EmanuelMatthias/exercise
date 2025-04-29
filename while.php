@@ -32,7 +32,7 @@ while(2**++$i < 20) {}
 echo "2^$i = " . 2**$i;
 ?>
 
-<h3>Aufgabe 2</h3>
+<h3>Aufgabe 3</h3>
 
 <?php
 $number = 6;

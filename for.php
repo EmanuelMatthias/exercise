@@ -16,7 +16,7 @@
 for ( $i = 1; $i <= 20; $i++) {
   echo (!(($i-1) % 5 ))?"\t<tr>\n":"";
   echo "\t\t<td style=\"border: 1px solid black; text-align:right;\">$i</td>\n";
-  echo (!($i % 5 ))?"\t<tr>\n":"";
+  echo (!($i % 5 ))?"\t</tr>\n":"";
 }
 ?>
 </table>
@@ -52,7 +52,7 @@ for ( $i = 1; $i <= $dim**2; $i++) {
   echo "\t\t<td>";
   echo (ceil($i/$dim) % 2) ? "X" : "O";
   echo "</td>\n";
-  echo (!($i % $dim ))?"\t<tr>\n":"";
+  echo (!($i % $dim ))?"\t</tr>\n":"";
 }
 ?>
 </table>
