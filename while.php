@@ -17,7 +17,6 @@ $result = 0;
 $i = 0;
 
 while(10**$i <= $test_number) {
-  echo floor($test_number % 10**($i+1)/ 10**$i).":";
     $result += floor(($test_number % 10**($i+1)) / 10**$i);
     $i++;
 }
