@@ -11,13 +11,16 @@
 
 <h3>Aufgabe 1</h3>
 
-<table style="border-collapse: collapse;">
+<table><!-- style="border-collapse: collapse;"> -->
 <?php
 for ( $i = 1; $i <= 20; $i++) {
   echo (!(($i-1) % 5 ))?"\t<tr>\n":"";
-  echo "\t\t<td style=\"border: 1px solid black; text-align:right;\">$i</td>\n";
+  echo "\t\t<td";
+  // echo " style=\"border: 1px solid black; text-align:right;\"";
+  echo ">$i</td>\n";
   echo (!($i % 5 ))?"\t</tr>\n":"";
 }
+echo (($i-1) % 5 )?"\t</tr>\n":"";
 ?>
 </table>
 <br>
