@@ -12,6 +12,14 @@
 
     <?php
       print_r("<br>");
+
+      /**
+       * Zeichentypen für Passwort-Erzeugung.
+       * 0 = lettersSmall => Kleinbuchstaben, 
+       * 1 = lettersBig => Großbuchstaben, 
+       * 2 = numbers => Zahlen, 
+       * 3 = specials => Sonderzeichen
+       */
       enum Type: int
       {
         case lettersSmall = 0;
@@ -20,6 +28,9 @@
         case specials = 3;
       }
     
+      /**
+       * Globale Zuordnung der Zeichen pro Typ (a–z, A–Z, 0–9, Sonderzeichen).
+       */
       define('CHAR_CONTENT', [
         Type::lettersSmall->value => range('a', 'z'),
         Type::lettersBig->value => range('A', 'Z'),
@@ -31,6 +42,10 @@
           range('{', '~')
         )
       ]);
+
+      /**
+       * Generator zur Erzeugung von Passwörtern mit verteilter Zeichenauswahl.
+       */
       class PasswordGenerator
       {
         private $length = 8;
@@ -47,7 +62,12 @@
           ];
           $this->calcDistribution();
         }
-        public static function getValid($pass): array{
+        /**
+         * Analysiert ein Passwort auf enthaltene Zeichentypen.
+         * @param string $pass: Das zu prüfende Passwort
+         * @return string[] Treffer je Typ und Gesamtlänge
+         */
+        public static function getValid(string $pass): array{
           $decoded = htmlspecialchars_decode($pass);
           $result=[];
           $result[] = "Länge: " . strlen($decoded);
@@ -127,7 +147,7 @@
         Type::numbers->value => 1,
         Type::specials->value => 1
       ]);    
-
+      
       $passwort_2 = new PasswordGenerator();
       $passwort_2->setDistribution([
         Type::lettersSmall->value => 1,
@@ -145,7 +165,7 @@
       $passwort_4 = new PasswordGenerator();
       $passwort_4->setDistribution([
         Type::lettersSmall->value => 5,
-        Type::lettersBig->value => 9
+        Type::lettersBig->value => 9,
       ]);
       
 

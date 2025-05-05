@@ -15,14 +15,13 @@
 <?php
 for ( $i = 1; $i <= 20; $i++) {
   echo (!(($i-1) % 5 ))?"\t<tr>\n":"";
-  echo "\t\t<td";
-  // echo " style=\"border: 1px solid black; text-align:right;\"";
-  echo ">$i</td>\n";
+  echo "\t\t<td>$i</td>\n";
   echo (!($i % 5 ))?"\t</tr>\n":"";
 }
 echo (($i-1) % 5 )?"\t</tr>\n":"";
 ?>
 </table>
+
 <br>
 <h3>Aufgabe 2</h3>
 
@@ -31,6 +30,8 @@ $sum = 0;
 for($i=1;$i<=10;$i++){
   if(!($i%2)) 
     $sum += $i;
+  // $sum += $i;
+  // $sum += (!($i%2)) ? $i : 0;
 }
 echo "Summe: $sum<br>\n";
 ?>
@@ -41,15 +42,18 @@ oder:<br>
 $sum = 0;
 for($i=2;$i<=10;$i+=2){
   $sum += $i;
+  // $sum += $i;
+  // $sum = $sum + $i;
 }
 echo "Summe: $sum<br>\n";
+
 ?>
 <br>
 <h3>Aufgabe 3</h3>
 
 <table>
 <?php
-$dim = 4;
+$dim = 6;
 for ( $i = 1; $i <= $dim**2; $i++) {
   echo (!(($i-1) % $dim ))?"\t<tr>\n":"";
   echo "\t\t<td>";
