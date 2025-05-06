@@ -362,7 +362,7 @@
     printHtml("</tbody>", 2);
     printHtml("<tfoot>", 2);
     printHtml("<tr>", 3);
-    printHtml("<td colspan=5>Gültiges Passwort nach $tries Versuchen: $pass</td>", 4);
+    printHtml("<td colspan=6>Gültiges Passwort nach $tries Versuchen: $pass</td>", 4);
     printHtml("</tr>", 3);
     printHtml("</tfoot>", 2);
     printHtml("</table>", 1);
