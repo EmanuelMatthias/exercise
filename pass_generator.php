@@ -295,7 +295,18 @@
   $strongPass = new PasswordGenerator();
   $strongPass->setLength($strongPassLength);
 
+  $max = $strongPassLength - count(Type::cases()) -1;
+  $min = ceil(((count(Type::cases()) -1) * $max) / ($length - 1));
+
+  // TODO hier muss noch der min  wert berechnet werden damit mindestens 1 zeichen pro typ vorhanden ist
+
   for ($j = 1; $j <= 5; $j++) {
+    // $strongPass->setDistribution([
+    //   Type::lettersSmall->value => random_int($min, $max),
+    //   Type::lettersBig->value => random_int($min, $max),
+    //   Type::numbers->value => random_int($min, $max),
+    //   Type::specials->value => random_int($min, $max),
+    // ]);
     $strongPass->setDistribution([
       Type::lettersSmall->value => random_int(3, 10),
       Type::lettersBig->value => random_int(3, 10),
