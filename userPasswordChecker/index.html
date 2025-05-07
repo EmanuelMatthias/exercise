@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Password Test</title>
+  <script src="./userPassWordTest.js"></script>
+  <link rel="stylesheet" href="./userPassWordTest.css">
+</head>
+
+<body>
+
+  <div id="userPasswordTable">
+    <th>Passwordeingabe</th>
+  </div>
+
+  <div>
+    <input type="text" id="passwordInput" placeholder="Enter password" />
+    <button id="sendButton">Send</button>
+  </div>
+
+  <table id="userPasswordTableResult">
+    <thead>
+      <tr>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="userPasswordTableResultBody">
+      <tr>
+        <td class="label">Laenge (min 8)</td>
+        <td id="result_Length" class="result"></td>
+      </tr>
+      <tr>
+        <td class="label">Kleinbuchstaben</td>
+        <td id="result_smallLetter" class="result"></td>
+      </tr>
+      <tr>
+        <td class="label">Grossbuchstaben</td>
+        <td id="result_bigLetter" class="result"></td>
+      </tr>
+      <tr>
+        <td class="label">Nummern</td>
+        <td id="result_number" class="result"></td>
+      </tr>
+      <tr>
+        <td class="label">Special</td>
+        <td id="result_special" class="result"></td>
+      </tr>
+      <tr>
+        <td class="label">Qualitaet (min 50)</td>
+        <td id="result_quality" class="result"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="userPasswordResult"></div>
+
+  <script>window.addEventListener("load", main);</script>
+
+</body>
+
+</html>

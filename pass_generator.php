@@ -295,8 +295,8 @@
   $strongPass = new PasswordGenerator();
   $strongPass->setLength($strongPassLength);
 
-  $max = $strongPassLength - count(Type::cases()) -1;
-  $min = ceil(((count(Type::cases()) -1) * $max) / ($length - 1));
+  // $max = $strongPassLength - count(Type::cases()) -1;
+  // $min = ceil(((count(Type::cases()) -1) * $max) / ($length - 1));
 
   // TODO hier muss noch der min  wert berechnet werden damit mindestens 1 zeichen pro typ vorhanden ist
 
