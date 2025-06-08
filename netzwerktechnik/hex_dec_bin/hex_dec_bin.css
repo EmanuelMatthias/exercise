@@ -1,0 +1,43 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #e0e0e0;
+  font-family: Arial, sans-serif;
+  width: 500px;
+  margin: auto;
+  padding-top: 20px;
+}
+div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+table {
+  position: relative;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 20px;
+}
+td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+td.label {
+  white-space: nowrap;
+  width: 1%;
+  max-width: max-content;
+  background-color: #f0f0f0;
+}
+td.result {
+  background-color: #f9f9f9;
+  white-space: wrap;
+}
+td.result.need_this {
+  font-weight: bold;
+  background-color: #ff61619c;
+}
+
+#userPasswordResult {
+  margin-top: 20px;
+}
