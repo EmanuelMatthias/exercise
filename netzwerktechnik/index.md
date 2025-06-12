@@ -6,6 +6,11 @@
 |Router|C/O|1:1   |1:1|C/O   |
 
 Jürgen Luchmann luchmann@bbq.de
+### interessante Links
+- http://ralf-pohlmann.de/
+- https://kohnlehome.de/
+- https://www.netacad.com/
+- https://www.computerweekly.com/de/feature/IEEE-802-Die-Netzwerkstandards-im-Ueberblick
 
 ### verwendete software/hardware
 - pakettracer (simulation)
@@ -32,7 +37,12 @@ Jürgen Luchmann luchmann@bbq.de
 |CRC|||
 |DHCP|Dynamic Host Configuration Protocol||
 |NTP|Network Time Protocol|
-|VTY|Virtual Teletype|
+|VLAN|Virtuelles LAN|
+|VTY|Virtual Teletype (Terminale)|
+|SVI||
+|CLI|Command Line Interface|
+|RS232|Serielles Computer Interface|
+|IETF|Internet Enineering Task Force|
 
 # OSI
 - kommunikation
@@ -103,63 +113,7 @@ decapsulation
 
 
 TCP/IP => Verbindungslos
-- 
 
-| | | |
-|-|-|-|
-| 1000 0000 | 0x80 | 128 |
-| 1100 0000 | 0xC0 | 192 |
-| 1110 0000 | 0xE0 | 224 |
-| 1111 0000 | 0xF0 | 240 |
-
-|||
-|-|-|
-| 0x3F |  063 |
-| 0x7A |  122 |
-| 0x11 |  017 |
-| 0xE4 |  228 |
-| 0xAA |  170 |
-| 0x33 |  051 |
-| 0xFF |  255 |
-|  117 | 0x75 |
-|  129 | 0x81 |
-|  211 | 0xD3 |
-|  019 | 0x13 |
-|  049 | 0x31 |
-|  133 | 0x85 |
-|  249 | 0xF9 |
-
-| ||||
-|-|-|-|-|
-|  1 | 0000 | 0 |   0 |
-|  2| 0001 | 1 |  16 |
-|  3 | 0010 | 2 |  32 |
-|  4 | 0011 | 3 |  48 |
-|  5 | 0100 | 4 |  64 |
-|  6 | 0101 | 5 |  80 |
-|  7 | 0110 | 6 |  96 |
-|  8 | 0111 | 7 | 112 |
-|  9 | 1000 | 8 | 128 |
-| 10 | 1001 | 9 | 144 |
-| 11 | 1010 | A | 160 |
-| 12 | 1011 | B | 176 |
-| 13 | 1100 | C | 192 |
-| 14 | 1101 | D | 208 |
-| 15 | 1110 | E | 224 |
-| 16 | 1111 | F | 240 |
-
-0100 1101 0x4D "M"
-0110 1001 0x69 "i"
-0111 0100 0x74 "t"
-0111 0100 0x74 "t"
-0110 0001 0x61 "a"
-0110 0111 0x67 "g"
-0111 0011 0x73 "s"
-0111 0000 0x70 "p"
-0110 0001 0x61 "a"
-0111 0101 0x75 "u"
-0111 0011 0x73 "s"
-0110 0101 0x65 "e"
 
 ## Switch start
 |||
@@ -208,3 +162,63 @@ S#write [copy running-config start-config]
 S#delete flash:config.txt
 ["flash:" speicherort, "config.txt" filename ]  
 S#reload
+
+
+
+### weitere
+interface vlan 1  
+    ip address 1.1.1.1 255.255.255.0
+    no shutdown
+no ip domain-lookup  
+ip default-gateway 1.1.1.254  
+ntp server 1.2.3.4
+
+
+### sync clock
+#### server
+ip setzen 1.1.1.10 255.255.255.0  
+ntp-service: on  
+
+#### Switch
+interface vlan 1
+    ip address 1.1.1.1 255.255.255.0
+    no shutdown
+ntp server 1.1.1.10
+show ntp status
+show clock
+
+## Standard-Organisationen
+|||
+|-|-|
+|ISO|International Organization for Standardization|
+|TIA/EIA|Telecommunications Industry Association/Electronic Industries Association |
+|ITU|International Telecommunication Union|
+|ANSI|American National Standards Institute|
+|IEEE|Institute of Electrical and Electronics Engineers|
+|FCC|Federal Communication Commission|
+|ETSI|European Telecommunications Standards Institute|
+|CSA |Canadian Standards Association|
+|CENELEC |Europäisches Komitee für elektrotechnische Normung|
+|JSA/JIS |Japanese Standards Association|
+
+## Bitübertragungsschicht
+### Begrifflichkeiten
+- LED
+- OFS (Laser) Oberflächen Strahler
+- https://www.gbic-shop.de/media/image/storage/opc/what-is-the-difference-between-singlemode-and-multimode-fiber/what-is-the-difference-between-singlemode-and-multimode-fiber-2.jpg
+- T568 A/B
+-------------
+
+- Physische Komponenten
+- Kodierung
+- Signalisierung
+
+
+- 802.2-Frame (LLC Frame)
+    - 802.3 Frame => Draht-Ethernet
+    - 802.11 Frame => WI-FI
+    - 802.4 Token-Ring Frame => Token-Ring Bus
+
+## Glasfasermedien
+- SMF
+- MMF
