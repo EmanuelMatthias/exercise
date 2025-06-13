@@ -6,6 +6,9 @@
 |Router|C/O|1:1   |1:1|C/O   |
 
 Jürgen Luchmann luchmann@bbq.de
+- it eigenschaft
+    - neugier
+    - demut
 ### interessante Links
 - http://ralf-pohlmann.de/
 - https://kohnlehome.de/
@@ -22,6 +25,7 @@ Jürgen Luchmann luchmann@bbq.de
 |-|-|-|
 |NIC| Network Interface Card||
 |LAN| Local Area Network||
+|WAN| Wide Area Network||
 |ISP| Internet Service Provider||
 |SP| Service Provider||
 |BPDU|||
@@ -93,7 +97,7 @@ stichwort:
 - partial mesh / full mesh
 - domäne
 - broadcastdomäne
-- PAN, LAN, CAN, MAN^, WAN, GAN, AS
+- PAN, LAN, CAN, MAN, WAN, GAN, AS
 - Bundes Post information
 - AccessPort, DistibutionsSwitch
 
@@ -219,6 +223,40 @@ show clock
     - 802.11 Frame => WI-FI
     - 802.4 Token-Ring Frame => Token-Ring Bus
 
-## Glasfasermedien
+### Glasfasermedien
 - SMF
 - MMF
+
+### Interfaces
+||||
+|-|-|-|
+|ethernet|eth0/0|10Mbit/s|
+|fastethernet|fa0/0|(10)100MBit/s|
+|gigabitethernet (1000MBitEthernet)|gi0/0|(10/100/)1000MBit/s|
+|tengigabitethernet|te0/0|(1000)10_000MBit/s|
+
+### Portbezeichnung
+||typ|gerätenr.|modulbr.|interfacenr. im modul|
+|-|-|-|-|-|
+|g0/0|g|-|0|0|
+|g1/0/1|g|1|0|1|
+
+
+## Sicherungsschicht (data-link-layer)
+### Unterschichten
+- Logical Link Control (LLC)
+- Media Access Control (MAC)
+### Standards und Protokolle der TCP/IP 
+- Institute of Electrical and Electronics Engineers (IEEE)
+- International Telecommunication Union (ITU)
+- International Organization for Standardization (ISO)
+- American National Standards Institute (ANSI)
+### Konfliktbasierter Zugriff
+- CSMA/CD Carrier Sense Multiple Access/Collision Detection
+  (Kollisionserkennung)
+  - Leitung besetzt, ich warte
+- CSMA/CA Carrier Sense Multiple Access/Collision Avoidance
+  (Kollisionsvermeidung)
+  - via Zeit
+
+
