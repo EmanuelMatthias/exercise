@@ -259,4 +259,19 @@ show clock
   (Kollisionsvermeidung)
   - via Zeit
 
+### LLC
+TYP | Payload <- Ethernet II
+Länge | SSAP | DSAP | CTR | Payload <- 802.3 (SAP)
+Länge | 0xAA | 0xAA | CTR | OUT | Service | Payload <- 802.3 (NSAP)
 
+### Begriffe 2
+- Broadcast Domäne
+- Kollisons Domäne
+- store and forward
+    - gesamten Frame empfange
+        - CRC kontrollieren
+        - weiterleiten
+- cut through
+    - MAC empfangen
+        - Weiterleitungsentscheidung
+        - weiterleiten
