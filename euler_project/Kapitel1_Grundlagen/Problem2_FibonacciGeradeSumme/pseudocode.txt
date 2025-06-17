@@ -1,0 +1,10 @@
+- erzeugen einer variable summe mit dem wert 0
+- startvariaben a und b deklarieren und mit 0 und 1 initialisieren
+- variable next deklarieren und als wert die summe von a und b setzen
+- solange next kleiner als limit ist (4000000) soll ausgefuehrt werden:
+    - ueberpruefung ob wert von variable next gerade ist
+        - wenn dann soll die summe um den wert von next erhoeht werden
+    - der wert von b wird auf a gesetzt
+    - der wert von next wird auf b gesetzt
+    - der wert von next wird neu gesetzt durch die summe von a und b
+- ausgabe der variable summe

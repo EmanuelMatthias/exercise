@@ -1,0 +1,47 @@
+Kapitel 1: Grundlagen der Schleifen, Summen und Bedingungen
+  Kapitel1_Grundlagen
+
+  1.1 Problem 1: Vielfache von 3 oder 5 (Summenbildung, Modulo, Schleife)
+    Problem1_Vielfache3oder5
+  1.2 Problem 2: Fibonacci-Zahlen und geradzahlige Summen
+    Problem2_FibonacciGeradeSumme
+  1.3 Problem 3: Primfaktorzerlegung
+    Problem3_Primfaktorzerlegung
+  1.4 Problem 4: Palindrom-Produkte
+    Problem4_PalindromProdukte
+  1.5 Problem 5: kleinstes gemeinsames Vielfaches
+    Problem5_KGV
+  1.6 Problem 6: Quadratsummen
+    Problem6_Quadratsummen
+
+Kapitel 2: Primzahlen, Teilbarkeit und Zahlentheorie
+  Kapitel2_PrimzahlenZahlentheorie
+
+  2.1 Problem 7: n-te Primzahl
+    Problem7_NtePrimzahl
+  2.2 Problem 10: Summe aller Primzahlen unter einer Grenze
+    Problem10_SummePrimzahlenUnterGrenze
+  2.3 Problem 12: Dreieckszahlen und Teileranzahl
+    Problem12_DreieckszahlenTeileranzahl
+  2.4 Problem 14: Collatz-Folgen
+    Problem14_CollatzFolgen
+  2.5 Problem 16: Quersummen großer Potenzen
+    Problem16_QuersummeGrosserPotenzen
+
+Kapitel 3: Kombinatorik und Permutationen
+  Kapitel3_KombinatorikPermutationen
+
+  3.1 Problem 15: Gitterwege
+    Problem15_Gitterwege
+  3.2 Problem 24: Permutationsfolgen
+    Problem24_Permutationsfolgen
+  3.3 Problem 31: Münzwechselprobleme
+    Problem31_Muenzwechsel
+
+Kapitel 4: Rekursion, dynamische Programmierung und Effizienz
+  Kapitel4_RekursionDynamik
+
+  4.1 Problem 18: maximaler Pfad in einem Dreieck
+    Problem18_MaxPfadDreieck
+  4.2 Problem 67: maximaler Pfad in großem Dreieck (wie 18, nur größer)
+    Problem67_MaxPfadGrossesDreieck

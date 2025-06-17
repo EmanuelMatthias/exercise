@@ -1,0 +1,7 @@
+- initialisiere eine variable greatestFactor mit dem wert 2 (kleinste primzahl)
+- initialisiere eine variable current mit dem zu testenden wert
+- solange greatestFactor kleiner als current ist tue:
+    - vergleiche ob current ganzzahlig teilbar durch greatestFactor ist
+        - wenn ja teile current durch greatestFactor und speichere es in current
+        - wenn nein erhhoehe greatestFactor um 1
+- gibt den wert von greatestFactor aus
