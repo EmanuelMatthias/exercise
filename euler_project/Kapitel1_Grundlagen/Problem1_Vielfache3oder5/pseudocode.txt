@@ -1,0 +1,5 @@
+- eine variable summe erstellen mit dem wert 0
+- von 0 bis 999 durchgehen dabei schauen ob die jeweilige Zahl
+    - entweder durch 3 oder durch 5, teilbar ist (kein rest bzw modulus == 0)
+        - wenn ja dann die zahl zur variable summe hinzuaddieren
+- nach dem durchgehen die variable summe 

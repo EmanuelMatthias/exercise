@@ -1,0 +1,24 @@
+- initialisiere variablen resA, resB, greatest mit dem wert 1
+- iteriere eine variable a von 100 bis 999
+    - iteriere eine variable b von a bis 999
+        - teste ob das produkt von a und b groesser als greatest ist
+            - wenn ja schau ob produkt ein palindrom ist (verweis auf istPalendrom(produkt))
+                - wenn ja speichere:
+                    - a in resA
+                    - b in resB
+                    - produkt von a und b in greatest
+- gibt resA,resB,greatest aus
+
+istPalendrom(candidat)
+- initialisiere ein leeres array a
+# aufsplitten
+- solange candidat groesser als 0 ist tue:
+    - initialisiere eine variable z mit dem wert von candidat modulus 10
+    - fuege z dem array a hinzu
+    - subtrahiere z von candidat und teile es anschliessend durch 10 und speichere es in candidat
+# palindrom test
+- initialisiere eine varibale res mit dem wert true
+- vergleiche die werte vom ersten element und letztem element
+    - wenn ungleich setze res auf false
+    - fuehre diesen vergleich nach innenlaufend bis zur mitte des arrays a schrittweise um eins vermindert durch
+gib den wert von der variable res zurueck

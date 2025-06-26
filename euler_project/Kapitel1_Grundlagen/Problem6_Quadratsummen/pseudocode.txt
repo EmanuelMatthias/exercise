@@ -1,0 +1,7 @@
+- erzeuge zwei variablen sumQuad, quadSum mit dem wert 0
+- iterieren variable i von 1 bis 100
+    - rechne i mal i und addiere das ergebniss zu sumQuad
+    - addiere i zu quadSum
+- rechne quadSum mal quadSum und speichere es in quadSum
+- rechne quadSum minus sumQuad und speicher es in eine variable diff
+- gib diff aus
