@@ -245,7 +245,7 @@ show clock
 ## Sicherungsschicht (data-link-layer)
 ### Unterschichten
 - Logical Link Control (LLC)
-- Media Access Control (MAC)
+- Mcedia Access Control (MAC)
 ### Standards und Protokolle der TCP/IP 
 - Institute of Electrical and Electronics Engineers (IEEE)
 - International Telecommunication Union (ITU)
@@ -275,3 +275,111 @@ Länge | 0xAA | 0xAA | CTR | OUT | Service | Payload <- 802.3 (NSAP)
     - MAC empfangen
         - Weiterleitungsentscheidung
         - weiterleiten
+
+## vlan2 und mehr aktivieren
+S(c)# vlan 2  
+S(c-vlan)# exit  
+S(c)# interface range fa0/1-24  
+S(config-if-range)# switchport mode access  
+S(config-if-range)# exit
+S(c)#  interface range fa0/13-24
+S(config-if-range)# switchport access vlan 2
+S(config-if-range)# exit
+S(c)# show vlan
+
+s(c)# interface g0/0
+    switchport mode trunk
+
+
+
+
+## IPv4
+1)  
+172.16.33.7/24  
+lan: 172.16.33.0/24  
+first: 172.16.33.1/24  
+last: 172.16.33.254/24  
+bc: 172.16.33.255/24
+
+2)
+112.33.44.55/26  
+112.33.44.0x37/26  
+112.33.44.00|11 0111/26  
+lan: 112.33.44.0/26  
+first: 112.33.44.1/26  
+last: 112.33.44.62/26  
+bc: 112.33.44.63/26  
+
+3)
+47.208.240.11/20  
+47.208.0xF0.11/20  
+47.208.1111| 0000.11/20  
+lan: 47.208.240.0/20  
+first: 47.208.240.1/20  
+last: 47.208.255.254/20  
+bc: 47.208.255.255/20  
+
+4)
+88.44.192.30/22  
+88.44.0xC0.30/22  
+88.44.1100 00|00.30/22  
+lan: 88.44.192.0/22  
+first: 88.44.192.1/22  
+last: 88.44.195.254/22  
+bc: 88.44.195.255/22  
+
+## submasken <=> cidr
+255.255.192.0 <=> /18  
+255.248.0.0 <=> /13  
+255.255.252.0 <=> /22  
+255.255.255.252 <=> /30  
+255.128.0.0 <=> /9  
+240.0.0.0 <=> /4  
+
+/17 <=> 255.255.128.0  
+/24 <=> 255.255.255.0  
+/30 <=> 255.255.255.252  
+/26 <=> 255.255.255.192  
+/18 <=> 255.255.192.0  
+/11 <=> 255.224.0.0  
+/13 <=> 255.248.0.0  
+/7 <=> 254.0.0.0  
+
+
+17.33.249.144  
+0x11.0x21.0xF9.0x90  
+
+/20  
+17.33.1111|1001  
+lan: 17.33.240.0  
+first: 17.33.240.1  
+last: 17.33.255.254  
+bc: 17.33.255.255  
+
+/13  
+17.0010 0|001  
+lan: 17.32.0.0  
+first: 17.32.0.1  
+last: 17.39.255.254  
+bc: 17.39.255.255  
+
+/28  
+17.33.249.1001|0000  
+lan: 17.33.249.144  
+first: 17.33.249.145  
+last: 17.33.249.158  
+bc: 17.33.249.159  
+
+/9  
+17.0|010 0001.249.144  
+lan: 17.0.0.0  
+first: 17.0.0.1  
+last: 17.127.255.254  
+bc: 17.127.255.255  
+
+/7  
+0001 000|1.33.249.144  
+lan: 16.0.0.0  
+first: 16.0.0.1  
+last: 17.255.255.254  
+bc: 17.255.255.255  
