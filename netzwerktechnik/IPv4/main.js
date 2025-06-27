@@ -93,7 +93,8 @@ class Exercise {
     sideContentforTypeX() {
         if (this.typ === 0) return this.sideContentforType0()
         if (this.typ === 1) return this.sideContentforType1()
-        return this.sideContentforType2()
+        if (this.typ === 2) return this.sideContentforType2()
+        if (this.typ === 3) return this.sideContentforType3()
     }
     sideContentforType0() {
         return {
@@ -112,13 +113,92 @@ class Exercise {
             subCount: Math.pow(2, diff),
         }
     }
-    sideContentforType2() { }
+    sideContentforType2() {
+
+        const count = Math.floor(Math.random() * 6) + 2
+        let maxCIDR = 32
+        const subs = generateWeightedSequenze(count, 8, 1.25)
+            .map(a => Math.pow(2, a + 2))
+            .map((a) => {
+                const clients = a + Math.floor(Math.random() * a)
+                const [cidr, hosts] = this.getSmallestCIDR(clients)
+                if (maxCIDR > cidr)
+                    maxCIDR = cidr
+                return { clients, cidr, hosts }
+            })
+        if (this.ipv4.getCIDR() >= maxCIDR)
+            this.ipv4.setCIDR(maxCIDR - 2)
+
+        return {
+            netmaskOrCidr: Math.floor(Math.random() * 2),
+            subCount: count,
+            subs: subs
+        }
+    }
+    sideContentforType3() {
+
+        const count = Math.floor(Math.random() * 6) + 2
+        let maxCIDR = 32
+        const subs = generateWeightedSequenze(count, 8, 1.25)
+            .map(a => Math.pow(2, a + 2))
+            .map((a) => {
+                const clients = a + Math.floor(Math.random() * a)
+                const [cidr, hosts] = this.getSmallestCIDR(clients)
+                if (maxCIDR > cidr)
+                    maxCIDR = cidr
+                return { clients, cidr, hosts }
+            })
+        if (this.ipv4.getCIDR() >= maxCIDR)
+            this.ipv4.setCIDR(maxCIDR - 2)
+
+        return {
+            netmaskOrCidr: Math.floor(Math.random() * 2),
+            subCount: count,
+            subs: subs
+        }
+    }
     getHTMLforTypX() {
         if (this.typ === 0) return this.getHTMLforTyp0
         if (this.typ === 1) return this.getHTMLforTyp1
-        return this.getHTMLforTyp2
+        if (this.typ === 2) return this.getHTMLforTyp2
+        if (this.typ === 3) return this.getHTMLforTyp3
     }
 
+    getSmallestCIDR = (clientCount) => {
+        for (let cidr = 32; cidr >= 0; cidr--) {
+            const hosts = Math.pow(2, 32 - cidr) - 2
+            if (hosts >= clientCount)
+                return [cidr, hosts]
+        }
+    }
+    findCommonPrefix(addrs) {
+        let result = addrs[0]
+        let mask = 0xFFFFFFFF
+        let cidr = 32
+        console.log(addrs)
+
+        // for (let i = 1; i < 10; i++) {
+        //     console.log(mask.toString(2))
+        //     mask = mask >>> 1    
+        // }
+        for (let i = 1; i < addrs.length; i++) {
+            console.log(result)
+            console.log(addrs[i])
+            console.log(result >>> (32 - cidr))
+            console.log((addrs[i]>>>(32 - cidr)))
+        //     while (((result >>> (32 - cidr)) !== (addrs[i]>>>(32 -cidr))) && cidr > 0) {
+        //         cidr--
+        //     }
+        }
+        // const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0
+        // const base = result & mask
+        // const cidr = mask.toString(2).replace(/0/g, '').length
+        // const base = result & mask
+
+
+        // console.log(mask.toString(2))        
+        // return [base, cidr]
+    }
 
     containerElement(typ, parent) {
         const ele = document.createElement(typ)
@@ -201,7 +281,6 @@ class Exercise {
         this.tableElement(
             this.container,
             [
-                [],
                 ['', ...ip],
                 // ['',...iphex],
                 [
@@ -225,7 +304,6 @@ class Exercise {
             this.tableElement(
                 this.container,
                 [
-                    [],
                     ['', '/' + this.ipv4.getCIDR()],
                     [
                         'Bin',
@@ -246,13 +324,11 @@ class Exercise {
                 ],
             )
         } else {
-            this.textElement('h2',this.container,'Submask')
+            this.textElement('h2', this.container, 'Submask')
             this.tableElement(
                 this.container,
                 [
-                    [
-                        '',
-                    ],
+                    [],
                     [
                         'CIDR /',
                         this.inputCheckElement(null, this.ipv4.getCIDR()),
@@ -359,15 +435,39 @@ class Exercise {
 
         const headerContainer = this.containerElement('div', this.container)
 
-        this.textElement('h1', headerContainer, 'Subnetting')
+        this.textElement('h1', headerContainer, 'Subnetting gleichverteilt')
         this.textElement('pre', headerContainer, ip.join('.') + '/' + this.ipv4.getCIDR() + ' -> ' + '/' + this.sideContent.subCIDR)
+
+
+        this.tableElement(
+            this.container,
+            [
+                ['', ...ip],
+                // ['',...iphex],
+                [
+                    'Hex',
+                    this.inputCheckElement(null, iphex[0]),
+                    this.inputCheckElement(null, iphex[1]),
+                    this.inputCheckElement(null, iphex[2]),
+                    this.inputCheckElement(null, iphex[3]),
+                ],
+                // ['',...ipbin],
+                [
+                    'Bin',
+                    this.inputCheckElement(null, ipbin[0]),
+                    this.inputCheckElement(null, ipbin[1]),
+                    this.inputCheckElement(null, ipbin[2]),
+                    this.inputCheckElement(null, ipbin[3]),
+                ]
+            ],
+        )
 
         const matrix = [];
         const mainIP = new IPv4(this.ipv4.getNetworkAddress().join('.'), this.sideContent.subCIDR)
         const mask = ~mainIP.getMaskInt() + 1
         for (let i = 0; i < this.sideContent.subCount; i++) {
             matrix[i] = [
-                'sublan ' + (i + 1),
+                'Sublan ' + (i + 1),
                 // mainIP.getIP().join('.') + '/' + this.sideContent.subCIDR,
                 // mask,
                 // mainIP.addMask(mask * i).join('.')+ '/' + this.sideContent.subCIDR,
@@ -383,21 +483,133 @@ class Exercise {
             this.container,
             [[], ...matrix],
         )
-        console.log('html typ 1');
-
-        console.log('gegeben')
-        // console.log('netmaskOrCidr:', this.sideContent.netmaskOrCidr)
-        console.log('IP:', this.ipv4.getIP(), (this.sideContent.netmaskOrCidr === 0) ? '/' + this.ipv4.getCIDR() : this.ipv4.getNetmask().join('.'))
-        console.log('gesucht:')
-        console.log('Lan:', this.ipv4.getNetworkAddress().join('.'), '/' + this.ipv4.getCIDR())
-        console.log('First:', this.ipv4.getFirstHost().join('.'), '/' + this.ipv4.getCIDR())
-        console.log('Last:', this.ipv4.getLastHost().join('.'), '/' + this.ipv4.getCIDR())
-        console.log('Broadcast:', this.ipv4.getBroadcastAddress().join('.'), '/' + this.ipv4.getCIDR())
-        console.log('Hosts:', '2^' + this.ipv4.getHostLengthBaseTwo() + ' - 2', '=', + Math.pow(2, this.ipv4.getHostLengthBaseTwo()) - 2)
-        console.log('Next Lan:', this.ipv4.getNextNetworkAddress().join('.'))
         return this.container
     }
-    getHTMLforTyp2() { console.log('html typ 2'); return this.container }
+    getHTMLforTyp2() {
+        const ip = this.ipv4.getIP();
+        const iphex = this.ipv4.getIPinHex();
+        const ipbin = this.ipv4.getIPinBinary();
+
+        const netmask = this.ipv4.getNetmask()
+        const netmaskhex = this.ipv4.getNetmaskinHex()
+        const netmaskbin = this.ipv4.getNetmaskinBinary()
+
+        const headerContainer = this.containerElement('div', this.container)
+
+        this.textElement('h1', headerContainer, 'Subnetting ungleichmässig verteilt')
+        this.textElement('pre', headerContainer,
+            ip.join('.') + '/' + this.ipv4.getCIDR() + ' -> ' +
+            this.sideContent.subs.map(a => a.clients).join(', '))
+        this.tableElement(
+            this.container,
+            [
+                ['', ...ip],
+                // ['',...iphex],
+                [
+                    'Hex',
+                    this.inputCheckElement(null, iphex[0]),
+                    this.inputCheckElement(null, iphex[1]),
+                    this.inputCheckElement(null, iphex[2]),
+                    this.inputCheckElement(null, iphex[3]),
+                ],
+                // ['',...ipbin],
+                [
+                    'Bin',
+                    this.inputCheckElement(null, ipbin[0]),
+                    this.inputCheckElement(null, ipbin[1]),
+                    this.inputCheckElement(null, ipbin[2]),
+                    this.inputCheckElement(null, ipbin[3]),
+                ]
+            ],
+        )
+
+
+        let currentIPv4 = new IPv4(this.ipv4.getNetworkAddress().join('.'), this.ipv4.getCIDR())
+        let matrix = [['', 'clients', 'hosts', 'okt 1', 'okt 2', 'okt 3', 'okt 4', '', 'CIDR']]
+        this.sideContent.subs.sort((a, b) => b.clients - a.clients).forEach((ele, id) => {
+            currentIPv4.setCIDR(ele.cidr)
+            matrix = [...matrix,
+            [
+                'Sublan ' + (id + 1),
+                this.inputCheckElement(null, ele.clients),
+                this.inputCheckElement(null, ele.hosts),
+                this.inputCheckElement(null, currentIPv4.getNetworkAddress()[0]),
+                this.inputCheckElement(null, currentIPv4.getNetworkAddress()[1]),
+                this.inputCheckElement(null, currentIPv4.getNetworkAddress()[2]),
+                this.inputCheckElement(null, currentIPv4.getNetworkAddress()[3]),
+                '/',
+                this.inputCheckElement(null, currentIPv4.getCIDR()),
+            ],
+                // [
+                //     'Hex',
+                //     '',
+                //     '',
+                //     this.inputCheckElement(null, iphex[0]),
+                //     this.inputCheckElement(null, iphex[1]),
+                //     this.inputCheckElement(null, iphex[2]),
+                //     this.inputCheckElement(null, iphex[3]),
+                // ],
+                // // ['',...ipbin],
+                // [
+                //     'Bin',
+                //     '',
+                //     '',
+                //     this.inputCheckElement(null, ipbin[0]),
+                //     this.inputCheckElement(null, ipbin[1]),
+                //     this.inputCheckElement(null, ipbin[2]),
+                //     this.inputCheckElement(null, ipbin[3]),
+                // ]
+            ]
+
+            currentIPv4 = new IPv4(currentIPv4.getNextNetworkAddress().join('.'), currentIPv4.getCIDR())
+        })
+        this.tableElement(
+            this.container,
+            [...matrix],
+        )
+        return this.container
+    }
+    getHTMLforTyp3() {
+        const ip = this.ipv4.getIP();
+        const iphex = this.ipv4.getIPinHex();
+        const ipbin = this.ipv4.getIPinBinary();
+
+        const netmask = this.ipv4.getNetmask()
+        const netmaskhex = this.ipv4.getNetmaskinHex()
+        const netmaskbin = this.ipv4.getNetmaskinBinary()
+
+        const headerContainer = this.containerElement('div', this.container)
+
+        this.textElement('h1', headerContainer, 'Supernetting')
+
+
+        let currentIPv4 = new IPv4(this.ipv4.getNetworkAddress().join('.'), this.ipv4.getCIDR())
+        let matrix = [[]]
+        let addrs = []
+        this.sideContent.subs.sort((a, b) => b.clients - a.clients).forEach((ele, id) => {
+            currentIPv4.setCIDR(ele.cidr)
+            matrix = [
+                ...matrix,
+                [
+                    'Sublan ' + (id + 1) + ':',
+                    currentIPv4.getNetworkAddress().join('.'),
+                    '/',
+                    currentIPv4.getCIDR(),
+                ],
+            ]
+            addrs=[...addrs,currentIPv4.getIPinBinary().join('')]
+
+            currentIPv4 = new IPv4(currentIPv4.getNextNetworkAddress().join('.'), currentIPv4.getCIDR())
+        })
+
+        console.log(this.findCommonPrefix(addrs))
+
+        this.tableElement(
+            this.container,
+            [...matrix],
+        )
+        return this.container
+    }
 }
 
 function shuffleArray(arr) {
@@ -430,47 +642,47 @@ function main() {
 
     shuffleTo255 = shuffleArray(Array(256).fill(0).map((_, b) => b))
     shuffleCIDR = shuffleArray(Array(25).fill(0).map((_, b) => b + 5))
-    shuffleTyp = generateWeightedSequenze(100, 2, 1.25)
+    shuffleTyp = generateWeightedSequenze(100, 3, 1.25)
 
     exercises = Array(20).fill(0)
         .map((_, id) => {
             return new Exercise(
-                shuffleTyp[id],
+                3,//shuffleTyp[id],
                 [shuffleTo255[id * 4], shuffleTo255[id * 4 + 1], shuffleTo255[id * 4 + 2], shuffleTo255[id * 4 + 3]],
                 shuffleCIDR[id]
             )
         })
         .forEach(ele => {
-            console.log(ele.typ, ele.ipv4.getIP(), ele.ipv4.getCIDR())
+            // console.log(ele.typ, ele.ipv4.getIP(), ele.ipv4.getCIDR())
             const html = ele.getHTML();
             htmlBody.appendChild(html)
-            console.log('')
+            // console.log('')
         });
 
-    ipv4_list = [
-        new IPv4("192.168.0.0", 16),
-        new IPv4("192.168.0.0", 18),
-        new IPv4("192.168.64.0", 18),
-        new IPv4("192.168.128.0", 18),
-        new IPv4("192.168.192.0", 18),
-    ]
-    ipv4_list.forEach(element => {
+    // ipv4_list = [
+    //     new IPv4("192.168.0.0", 16),
+    //     new IPv4("192.168.0.0", 18),
+    //     new IPv4("192.168.64.0", 18),
+    //     new IPv4("192.168.128.0", 18),
+    //     new IPv4("192.168.192.0", 18),
+    // ]
+    // ipv4_list.forEach(element => {
         // console.log(element.getIP(), element.getNetmask().join('.'), '/' + element.getCIDR())
-        console.log(element.getIP(), '/' + element.getCIDR())
+        // console.log(element.getIP(), '/' + element.getCIDR())
         // console.log('Hex:', '0x' + element.getIPinHex().join(' 0x'), 'Bin:', element.getIPinBinary().join(' '))
         // console.log('Hex:', '0x' + element.getNetmaskinHex().join(' 0x'), 'Bin:', element.getNetmaskinBinary().join(' '))
-        console.log('Lan:', element.getNetworkAddress().join('.'), '/' + element.getCIDR())
-        console.log('First:', element.getFirstHost().join('.'), '/' + element.getCIDR())
-        console.log('Last:', element.getLastHost().join('.'), '/' + element.getCIDR())
-        console.log('Broadcast:', element.getBroadcastAddress().join('.'), '/' + element.getCIDR())
-        console.log('Hosts:', '2^' + element.getHostLengthBaseTwo() + ' - 2', '=', + Math.pow(2, element.getHostLengthBaseTwo()) - 2)
-        console.log('Next Lan:', element.getNextNetworkAddress().join('.'))
+        // console.log('Lan:', element.getNetworkAddress().join('.'), '/' + element.getCIDR())
+        // console.log('First:', element.getFirstHost().join('.'), '/' + element.getCIDR())
+        // console.log('Last:', element.getLastHost().join('.'), '/' + element.getCIDR())
+        // console.log('Broadcast:', element.getBroadcastAddress().join('.'), '/' + element.getCIDR())
+        // console.log('Hosts:', '2^' + element.getHostLengthBaseTwo() + ' - 2', '=', + Math.pow(2, element.getHostLengthBaseTwo()) - 2)
+        // console.log('Next Lan:', element.getNextNetworkAddress().join('.'))
 
-        console.log('Next Lan:', ~element.getMaskInt() + 1)
-        console.log('Next Lan:', element.getInt())
+        // console.log('Next Lan:', ~element.getMaskInt() + 1)
+        // console.log('Next Lan:', element.getInt())
 
-        console.log('')
-    });
+        // console.log('')
+    // });
 }
 // ipv4_list = [
 //     new IPv4("17.33.249.144", 20),
