@@ -26,17 +26,6 @@ function main() {
       base.getBroadcastAddressinInt() - 1,
       base.getCIDRinDecimal()
     )
-    const randomClients = Helper.shuffleArray(
-      subnet.cidrs.reduce(
-        (acc, cidr) => {
-          console.log(`Acc: ${acc}`);
-          console.log(`CIDR: ${cidr}`);
-          console.log(`Clients: ${Math.floor(Math.pow(Math.random() * 0.8 + 1, cidr))}`);
-          return [...acc, { cidr, hosts: Math.floor(Math.pow(Math.random() * 0.8 + 1, cidr)) }];
-        },
-        []
-      )
-    )
     const header = `
       <div class="header">
         <span class="title">IPv4 Subnet ${id + 1}</span>
@@ -95,10 +84,12 @@ function main() {
       <div>
         <span class="head">Sub Netting:</span>
         <div class='content'>
-          ${randomClients.map(client => client.hosts).join()}<br>
-          ${randomClients.map(client => client.cidr).join()}<br>
-          ${base.getNetworkAddressinHexadecimal().join(':').toUpperCase()}<br>
-          ${base.getNetworkAddressinBinary().join(' ')}
+          ${subnet.getSubAddresses().map(sub => sub.hosts).join()}<br>
+          ${subnet.getSubAddresses().map(sub => Math.pow(2, 32 - sub.ipv4.getCIDRinDecimal())).join()}<br>
+          ${subnet.getSubAddresses().map(sub => 32 - sub.ipv4.getCIDRinDecimal()).join()}<br>
+          ${subnet.getSubAddresses().map(sub => 
+            sub.ipv4.getIPinDecimal().join('.') + ' /' + sub.ipv4.getCIDRinDecimal()
+          ).join('<br>')}<br>
         </div>
       </div>
 

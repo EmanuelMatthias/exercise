@@ -13,6 +13,7 @@ export class Subnet {
   }
   getNetworkAddressfromSubnet() { return this.calculateSubnetIP(); }
   getCIDRs(){ return this.cidrs; }
+  getSubAddresses(){ return this.calculateSubnetIP(); }
   getSuperAddress() { return this.findCommonIPv4(); }
 
   generateRandomCIDRs(startCIDR) {
@@ -28,7 +29,9 @@ export class Subnet {
           if (id == 0)
             if (Math.pow(2, maxClientsCIDR) == acc.remainingIPs)
               maxClientsCIDR -= 1;
-          const randomCIDR = Math.min(10, Helper.generateWeightedSequenze(1, maxClientsCIDR - 2, 0.6)[0] + 2);
+          const randomCIDR = Math.min(
+            Helper.generateWeightedSequenze(1, 7, 1.005)[0] + 3, 
+            Helper.generateWeightedSequenze(1, maxClientsCIDR - 2, 0.6)[0] + 2);
           acc.remainingIPs -= Math.pow(2, randomCIDR);
           acc.result.push(randomCIDR);
           return acc;
@@ -43,19 +46,24 @@ export class Subnet {
   calculateSubnetIP() {
     const result = this.cidrs.reduce((acc, cidr) => {
       const ipv4 = new IPv4(acc.currentIP.getNetworkAddressinInt(), 32 - cidr);
-      acc.result.push(new IPv4(ipv4.getNetworkAddressinInt(), 32 - cidr));
+      acc.result.push(
+        {
+          ipv4: new IPv4(ipv4.getNetworkAddressinInt(), 32 - cidr),
+          hosts: Math.floor(Math.pow(2, cidr-1) * (Math.random() * 0.5 + 1.3))
+        });
       acc.currentIP = new IPv4(ipv4.getBroadcastAddressinInt() + 1, 32 - cidr);
       return acc
     }, {
       currentIP: this.base,
       result: []
     })
-      .result;
+      .result
+      .sort((a,b) => b.hosts - a.hosts);
     this.calculateSubnetIP = () => result; // Cache the result for future calls
     return result;
   }
   findCommonIPv4(addrs) {
-    addrs = this.calculateSubnetIP().map(ipv4 => ipv4.getIPinInt());
+    addrs = this.calculateSubnetIP().map(sub => sub.ipv4.getIPinInt());
     let cidr = 32;
     let result = addrs[0];
     for (let i = 1; i < addrs.length; i++) {
