@@ -1,16 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./main.css">
 </head>
+
 <body>
-    <div id="main"></div>
+    <div id="container">
+        <div id="block">
+            <div id="main">
+            </div>
+        </div>
+        <div id="helper">
+            <div class="header">Helper</div>
+            <div class="helpertable">
+                <table>
+                    <thead>
+                        <tr><th>Dec</th><th>Hex 0x</th><th>Dec x*16</th><th>Bin</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0</td><td>0</td><td>0</td><td>0000</td></tr>
+                        <tr><td>1</td><td>1</td><td>16</td><td>0001</td></tr>
+                        <tr><td>2</td><td>2</td><td>32</td><td>0010</td></tr>
+                        <tr><td>3</td><td>3</td><td>48</td><td>0011</td></tr>
+                        <tr><td>4</td><td>4</td><td>64</td><td>0100</td></tr>
+                        <tr><td>5</td><td>5</td><td>80</td><td>0101</td></tr>
+                        <tr><td>6</td><td>6</td><td>96</td><td>0110</td></tr>
+                        <tr><td>7</td><td>7</td><td>112</td><td>0111</td></tr>
+                        <tr><td>8</td><td>8</td><td>128</td><td>1000</td></tr>
+                        <tr><td>9</td><td>9</td><td>144</td><td>1001</td></tr>
+                        <tr><td>10</td><td>A</td><td>160</td><td>1010</td></tr>
+                        <tr><td>11</td><td>B</td><td>176</td><td>1011</td></tr>
+                        <tr><td>12</td><td>C</td><td>192</td><td>1100</td></tr>
+                        <tr><td>13</td><td>D</td><td>208</td><td>1101</td></tr>
+                        <tr><td>14</td><td>E</td><td>224</td><td>1110</td></tr>
+                        <tr><td>15</td><td>F</td><td>240</td><td>1111</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="helperOff">Helper</div>
+    </div>
+    <template id="card">
+        <div class="card">
+            <div class="header"></div>
+            <div class="content"></div>
+        </div>
+    </template>
+    <template id="table-template">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </template>
 </body>
-<script src="./main.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded",main)
-</script>
+
+<script type="module" src='./main2.js'></script>
+
 </html>

@@ -9,6 +9,8 @@ class IPv4 {
     hostLength = 0;
 
     constructor(ip = "0.0.0.0", cidr = 1) {
+        if (typeof ip !== 'string')
+            ip = this.intToIp(ip).join('.');
         this.ip = ip
         this.cidr = cidr
         this.int = this.initIp(ip)
@@ -172,32 +174,19 @@ class Exercise {
         }
     }
     findCommonPrefix(addrs) {
-        let result = addrs[0]
-        let mask = 0xFFFFFFFF
-        let cidr = 32
-        console.log(addrs)
+        if (addrs.length === 0) return [0, 0];
 
-        // for (let i = 1; i < 10; i++) {
-        //     console.log(mask.toString(2))
-        //     mask = mask >>> 1    
-        // }
+        let cidr = 32;
+        let result = addrs[0];
+
         for (let i = 1; i < addrs.length; i++) {
-            console.log(result)
-            console.log(addrs[i])
-            console.log(result >>> (32 - cidr))
-            console.log((addrs[i]>>>(32 - cidr)))
-        //     while (((result >>> (32 - cidr)) !== (addrs[i]>>>(32 -cidr))) && cidr > 0) {
-        //         cidr--
-        //     }
+            while (((result >>> (32 - cidr)) !== (addrs[i] >>> (32 - cidr))) && cidr > 0) {
+                cidr--;
+            }
         }
-        // const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0
-        // const base = result & mask
-        // const cidr = mask.toString(2).replace(/0/g, '').length
-        // const base = result & mask
-
-
-        // console.log(mask.toString(2))        
-        // return [base, cidr]
+        const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+        const base = (result & mask) >>> 0;
+        return [base, cidr]
     }
 
     containerElement(typ, parent) {
@@ -248,7 +237,6 @@ class Exercise {
         const input = document.createElement('input')
         input.addEventListener('keyup', (ev) => {
             const shouldValue = preShouldValue.toString()
-            console.log(input.value, shouldValue)
             input.classList.remove('answerTrue', 'answerFalse')
             if (input.value === shouldValue)
                 input.classList.add('answerTrue')
@@ -590,23 +578,65 @@ class Exercise {
             currentIPv4.setCIDR(ele.cidr)
             matrix = [
                 ...matrix,
+                ['Sublan ' + (id + 1) + ':'],
                 [
-                    'Sublan ' + (id + 1) + ':',
-                    currentIPv4.getNetworkAddress().join('.'),
+                    '',
+                    ...currentIPv4.getNetworkAddress(),
                     '/',
                     currentIPv4.getCIDR(),
                 ],
+                [
+                    'Hex',
+                    this.inputCheckElement(null, currentIPv4.getIPinHex()[0]),
+                    this.inputCheckElement(null, currentIPv4.getIPinHex()[1]),
+                    this.inputCheckElement(null, currentIPv4.getIPinHex()[2]),
+                    this.inputCheckElement(null, currentIPv4.getIPinHex()[3]),
+                ],
+                [
+                    'Bin',
+                    this.inputCheckElement(null, currentIPv4.getIPinBinary()[0]),
+                    this.inputCheckElement(null, currentIPv4.getIPinBinary()[1]),
+                    this.inputCheckElement(null, currentIPv4.getIPinBinary()[2]),
+                    this.inputCheckElement(null, currentIPv4.getIPinBinary()[3]),
+                ]
+                // [
+                //     'Broadcast',
+                //     currentIPv4.getBroadcastAddress().join('.')
+                // ]
             ]
-            addrs=[...addrs,currentIPv4.getIPinBinary().join('')]
+            addrs = [...addrs, currentIPv4.getInt()]
 
             currentIPv4 = new IPv4(currentIPv4.getNextNetworkAddress().join('.'), currentIPv4.getCIDR())
         })
 
-        console.log(this.findCommonPrefix(addrs))
+        const [base, cidr] = this.findCommonPrefix(addrs)
+
+        const superIPv4 = new IPv4(base, cidr)
 
         this.tableElement(
             this.container,
             [...matrix],
+        )
+
+        this.tableElement(
+            this.container,
+            [
+                [
+                    'Superlan:',
+                    // ...superIPv4.getIP(),
+                    // '/', 
+                    // superIPv4.getCIDR()
+                ],
+                [
+                    '',
+                    this.inputCheckElement(null, superIPv4.getIP()[0]),
+                    this.inputCheckElement(null, superIPv4.getIP()[1]),
+                    this.inputCheckElement(null, superIPv4.getIP()[2]),
+                    this.inputCheckElement(null, superIPv4.getIP()[3]),
+                    '/', 
+                    this.inputCheckElement(null, superIPv4.getCIDR())
+                ]
+            ],
         )
         return this.container
     }
@@ -633,21 +663,22 @@ function generateWeightedSequenze(length, maxValue, factor = 2) {
     }
     return Array.from({ length }, () => weightedRandom())
 }
-
 function main() {
 
     htmlBody = document.getElementById('main');
-
-
+    if (htmlBody === null) {
+        console.error('No main element found')
+        return
+    }
 
     shuffleTo255 = shuffleArray(Array(256).fill(0).map((_, b) => b))
     shuffleCIDR = shuffleArray(Array(25).fill(0).map((_, b) => b + 5))
     shuffleTyp = generateWeightedSequenze(100, 3, 1.25)
 
-    exercises = Array(20).fill(0)
+    exercises = Array(50).fill(0)
         .map((_, id) => {
             return new Exercise(
-                3,//shuffleTyp[id],
+                shuffleTyp[id],
                 [shuffleTo255[id * 4], shuffleTo255[id * 4 + 1], shuffleTo255[id * 4 + 2], shuffleTo255[id * 4 + 3]],
                 shuffleCIDR[id]
             )
@@ -667,21 +698,21 @@ function main() {
     //     new IPv4("192.168.192.0", 18),
     // ]
     // ipv4_list.forEach(element => {
-        // console.log(element.getIP(), element.getNetmask().join('.'), '/' + element.getCIDR())
-        // console.log(element.getIP(), '/' + element.getCIDR())
-        // console.log('Hex:', '0x' + element.getIPinHex().join(' 0x'), 'Bin:', element.getIPinBinary().join(' '))
-        // console.log('Hex:', '0x' + element.getNetmaskinHex().join(' 0x'), 'Bin:', element.getNetmaskinBinary().join(' '))
-        // console.log('Lan:', element.getNetworkAddress().join('.'), '/' + element.getCIDR())
-        // console.log('First:', element.getFirstHost().join('.'), '/' + element.getCIDR())
-        // console.log('Last:', element.getLastHost().join('.'), '/' + element.getCIDR())
-        // console.log('Broadcast:', element.getBroadcastAddress().join('.'), '/' + element.getCIDR())
-        // console.log('Hosts:', '2^' + element.getHostLengthBaseTwo() + ' - 2', '=', + Math.pow(2, element.getHostLengthBaseTwo()) - 2)
-        // console.log('Next Lan:', element.getNextNetworkAddress().join('.'))
+    // console.log(element.getIP(), element.getNetmask().join('.'), '/' + element.getCIDR())
+    // console.log(element.getIP(), '/' + element.getCIDR())
+    // console.log('Hex:', '0x' + element.getIPinHex().join(' 0x'), 'Bin:', element.getIPinBinary().join(' '))
+    // console.log('Hex:', '0x' + element.getNetmaskinHex().join(' 0x'), 'Bin:', element.getNetmaskinBinary().join(' '))
+    // console.log('Lan:', element.getNetworkAddress().join('.'), '/' + element.getCIDR())
+    // console.log('First:', element.getFirstHost().join('.'), '/' + element.getCIDR())
+    // console.log('Last:', element.getLastHost().join('.'), '/' + element.getCIDR())
+    // console.log('Broadcast:', element.getBroadcastAddress().join('.'), '/' + element.getCIDR())
+    // console.log('Hosts:', '2^' + element.getHostLengthBaseTwo() + ' - 2', '=', + Math.pow(2, element.getHostLengthBaseTwo()) - 2)
+    // console.log('Next Lan:', element.getNextNetworkAddress().join('.'))
 
-        // console.log('Next Lan:', ~element.getMaskInt() + 1)
-        // console.log('Next Lan:', element.getInt())
+    // console.log('Next Lan:', ~element.getMaskInt() + 1)
+    // console.log('Next Lan:', element.getInt())
 
-        // console.log('')
+    // console.log('')
     // });
 }
 // ipv4_list = [
