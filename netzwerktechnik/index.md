@@ -294,6 +294,23 @@ s(c)# interface g0/0
 
 
 ## IPv4
+|||
+|-|-|
+|0.x.x.x|reserviert|
+|1.x.x.x||
+|...|unicast|
+|223.x.x.x||
+|224.x.x.x|multicast|
+|240.x.x.x|reserviert|
+
+|||
+|-|-|
+|10.x.x.x/8|private|
+|169.254.x.x/16|APIPA|
+|172.16.x.x/12|private|
+|192.168.x.x/16|private|
+
+
 1)  
 172.16.33.7/24  
 lan: 172.16.33.0/24  
