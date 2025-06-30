@@ -18,6 +18,10 @@ body {
     padding: 2rem 0;
 }
 
+td,th{
+    text-wrap: nowrap;
+}
+
 #container {
     display: flex;
     position: relative;
@@ -75,7 +79,7 @@ body {
     margin-bottom: 1rem;
     padding: 1rem;
 }
-.card .header {
+.card > .card_header {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -84,7 +88,7 @@ body {
     padding: 0 1rem ;
     margin-bottom: 0.5rem;
 }
-.card>.content {
+.card > .card_content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -92,21 +96,43 @@ body {
     flex-wrap: wrap;
     margin-bottom: 0.5rem;
 }
-.card>.content>div {
+.card > .card_content > div.article {
     flex: 1 0 45%;
     margin-bottom: 1rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     padding: 0.5rem;
 }
-.card>.content>div span.head{
+.card > .card_content > div.article > .article_header{
     font-weight: bold;
 }
-.card>.content>div div.content {
+.card > .card_content > div.article div.article_content {
     font-size: 1rem;
     margin-left: 1rem;
 }
 
+.card > .card_content > div.article > div.article_content tr td:nth-child(n+2){
+    text-align: center;
+}
+
+.card > .card_content > div.article > div.article_content input {
+    text-align: center;
+}
+.card > .card_content > div.article > div.article_content input, 
+.card > .card_content > div.article div.article_content input.dec,
+.card > .card_content > div.article div.article_content input.hex {
+    width: 78px;
+}
+.card > .card_content > div.article div.article_content input.bin {
+    width: 38px;
+}
+.card > .card_content > div.article div.article_content input.answerTrue{
+    background-color: rgb(0, 200, 0);
+}
+
+.card > .card_content > div.article div.article_content input.answerFalse{
+    background-color: rgb(255, 46, 46);
+} 
 /* 
 h1{
     margin: 0;
