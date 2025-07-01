@@ -2,9 +2,10 @@ import { IPv4 } from "./ipv4.class.js";
 import { Helper } from "./helper.class.js";
 
 export class HtmlRenderer {
-  constructor(helpField=false, help = false) {
+  constructor(helpField = false, help = false) {
     this.mainContainer = document.getElementById("main");
-    this.help = help;
+    this.help = false;
+    this.helpField = false;
   }
 
   createArticle() {
@@ -25,7 +26,16 @@ export class HtmlRenderer {
       base.getCIDRinDecimal()
     )
 
+
     const matrix = [];
+
+    matrix.push([{ colspan: 5, content: 'IP:' }]);
+    matrix.push(['Dec', ...base.getIPinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...base.getIPinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...base.getIPinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinBinary()]);
 
     matrix.push([{ colspan: 5, content: 'Mask/CIDR:' }]);
     matrix.push(['', { colspan: 2, content: this.createInput(base.getCIDRinDecimal(), 'normal') }]);
@@ -119,7 +129,7 @@ export class HtmlRenderer {
           ...address.ipv4.getNetworkAddressinDecimal(),
           address.ipv4.getCIDRinDecimal(),
         ]);
-        
+
       if (this.helpField) matrix.push(['Hex', ...address.ipv4.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
       if (this.helpField) if (this.help) matrix.push(['', ...address.ipv4.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
       if (this.helpField) matrix.push(['Bin', ...address.ipv4.getNetworkAddressinBinary().map(bin => this.createInput(bin, 'bin'))]);
@@ -136,12 +146,47 @@ export class HtmlRenderer {
     if (this.helpField) if (this.help) matrix.push(['', ...subnet.getSuperAddress().getCIDRinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
     if (this.helpField) matrix.push(['Bin', ...subnet.getSuperAddress().getCIDRinBinary().map(bin => this.createInput(bin, 'bin'))]);
     if (this.helpField) if (this.help) matrix.push(['', ...subnet.getSuperAddress().getCIDRinBinary()]);
-    
+
     matrix.push([{ colspan: 5, content: 'CIDR:' }]);
     matrix.push(['', { colspan: 2, content: this.createInput(subnet.getSuperAddress().getCIDRinDecimal(), 'normal') }]);
     if (this.help) matrix.push(['', { colspan: 2, content: subnet.getSuperAddress().getCIDRinDecimal() },]);
 
+
+    contentContainer.appendChild(this.createTable(matrix));
+    return article;
+  }
+
+  createAList({ base, subnet }, subnetType) {
+    const article = this.createArticle();
+    article.querySelector(".article_header").innerHTML = "Binary list:";
+    const contentContainer = article.querySelector(".article_content");
+
+    const first = new IPv4(
+      base.getNetworkAddressinInt() + 1,
+      base.getCIDRinDecimal()
+    );
+    const last = new IPv4(
+      base.getBroadcastAddressinInt() - 1,
+      base.getCIDRinDecimal()
+    )
+
+    let matrix = []
+
+    matrix.push(['IP', ...base.getIPinBinary()]);
+    matrix.push(['mask', ...base.getCIDRinBinary()]);
+    matrix.push(['net', ...base.getNetworkAddressinBinary()]);
+    matrix.push(['BC', ...base.getBroadcastAddressinBinary()]);
+    matrix.push(['first', ...first.getIPinBinary()]);
+    matrix.push(['last', ...last.getIPinBinary()]);
+
+
+    subnet.getSubAddresses().forEach((address, id) => {
+      matrix.push([`lan ${id + 1}`, ...address.ipv4.getIPinBinary()]);
+    })
+
     
+    matrix.push(['super', ...subnet.getSuperAddress().getIPinBinary()]);
+
     contentContainer.appendChild(this.createTable(matrix));
     return article;
   }

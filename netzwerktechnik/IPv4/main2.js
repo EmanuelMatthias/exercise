@@ -3,7 +3,7 @@ import { Subnet } from "./subnet.class.js";
 import { HtmlRenderer } from "./htmlRenderer.class.js";
 
 function main() {
-  const htmlRenderer = new HtmlRenderer(false);
+  const htmlRenderer = new HtmlRenderer(true,TransformStreamDefaultController);
   const exercise_list = [
     ...Array(25).fill(0).map(() => {
       const base = new IPv4(
@@ -15,6 +15,8 @@ function main() {
     })
   ];
 
+  let help = htmlRenderer.help;
+  let helpField = htmlRenderer.helpField;
   exercise_list.forEach(({ base, subnet }, id) => {
     const subnetType = Math.floor(Math.random() * 2) === 0;
     const header = `
@@ -28,10 +30,20 @@ function main() {
         </div>
       `;
 
+    if(id===0){
+      htmlRenderer.help = true;
+      htmlRenderer.helpField = true;
+    }else if(id===1){
+      htmlRenderer.help = help;
+    }else{
+      htmlRenderer.helpField = helpField;
+    }
     const content = [
       htmlRenderer.createArticle_network_infos({ base, subnet }, subnetType),
       htmlRenderer.createArticle_subnet({ base, subnet }, subnetType),
     ];
+    if(id===0)
+        content.push(htmlRenderer.createAList({ base, subnet }, subnetType))
     htmlRenderer.render({
       header,
       content
