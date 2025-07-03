@@ -5,12 +5,780 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./main2.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100vh;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: #e0e0e0;
+            padding: 2rem 0;
+        }
+
+        td,
+        th {
+            text-wrap: nowrap;
+        }
+
+        #container {
+            display: flex;
+            position: relative;
+            width: 100%;
+            gap: 1rem;
+            max-width: 1200px;
+            height: 100%;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                0 2px 10px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        #block {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                0 2px 10px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        #main {
+            width: 100%;
+            ;
+        }
+
+        #helper,
+        #helperOff {
+            height: max-content;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                0 2px 10px rgba(0, 0, 0, 0.2) inset;
+        }
+
+        #helperOff {
+            display: none;
+            writing-mode: sideways-lr;
+            font-weight: 600;
+            padding: 1rem 0.5rem;
+        }
+
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            position: relative;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .card>.card_header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 0 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card>.card_content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 2%;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .card>.card_content>div.article {
+            flex: 1 0 45%;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+        }
+
+        .card>.card_content>div.article>.article_header {
+            font-weight: bold;
+        }
+
+        .card>.card_content>div.article div.article_content {
+            font-size: 1rem;
+            margin-left: 1rem;
+        }
+
+        .card>.card_content>div.article>div.article_content tr td:nth-child(n+2) {
+            text-align: center;
+        }
+
+        .card>.card_content>div.article>div.article_content input {
+            text-align: center;
+        }
+
+        .card>.card_content>div.article>div.article_content input,
+        .card>.card_content>div.article div.article_content input.dec,
+        .card>.card_content>div.article div.article_content input.hex {
+            width: 78px;
+        }
+
+        .card>.card_content>div.article div.article_content input.bin {
+            width: 38px;
+        }
+
+        .card>.card_content>div.article div.article_content input.answerTrue {
+            background-color: rgb(0, 200, 0);
+        }
+
+        .card>.card_content>div.article div.article_content input.answerFalse {
+            background-color: rgb(255, 46, 46);
+        }
+    </style>
 </head>
 
 <body>
+    <div id="container">
+        <div id="block">
+            <div id="main">
+            </div>
+        </div>
+        <div id="helper">
+            <div class="header">Helper</div>
+            <div class="helpertable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dec</th>
+                            <th>Hex 0x</th>
+                            <th>Dec x*16</th>
+                            <th>Bin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0000</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>16</td>
+                            <td>0001</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>32</td>
+                            <td>0010</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>48</td>
+                            <td>0011</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>64</td>
+                            <td>0100</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>80</td>
+                            <td>0101</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>96</td>
+                            <td>0110</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>112</td>
+                            <td>0111</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>128</td>
+                            <td>1000</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>144</td>
+                            <td>1001</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>A</td>
+                            <td>160</td>
+                            <td>1010</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>B</td>
+                            <td>176</td>
+                            <td>1011</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>C</td>
+                            <td>192</td>
+                            <td>1100</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>D</td>
+                            <td>208</td>
+                            <td>1101</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>E</td>
+                            <td>224</td>
+                            <td>1110</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>F</td>
+                            <td>240</td>
+                            <td>1111</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="helperOff">Helper</div>
+    </div>
+    <template id="card">
+        <div class="card">
+            <div class="card_header"></div>
+            <div class="card_content"></div>
+        </div>
+    </template>
+
+    <template id="article">
+        <div class="article">
+            <div class="article_header"></div>
+            <div class="article_content"></div>
+        </div>
+    </template>
 </body>
 
-<script type="module" src='./main.js'></script>
+<script>
+class IPv4 {
+  constructor(base, cidr) {
+    this.base = base;
+    this.cidr = cidr;
+    this.mask = (0xFFFFFFFF << (32 - cidr)) >>> 0;
+  }
+
+  // get API
+  // Cidr
+  getCIDRinInt() { return (0xFFFFFFFF << (32 - this.cidr)) >>> 0; }
+  getCIDRinDecimal() { return this.cidr; } // CIDR is a number, so convert to decimal
+  getCIDRinDec() { return this.intToDecimal(this.getCIDRinInt()); } // CIDR is a number, so convert to decimal
+  getCIDRinHexadecimal() { return this.intToHexdecimal(this.getCIDRinInt()); } // CIDR is a number, so convert to hex
+  getCIDRinBinary() { return this.intToBinary(this.getCIDRinInt()); } // CIDR is a number, so convert to binary
+  // IP
+  getIPinInt() { return this.base; }
+  getIPinDecimal() { return this.intToDecimal(this.base); }
+  getIPinHexadecimal() { return this.intToHexdecimal(this.base); }
+  getIPinBinary() { return this.intToBinary(this.base); }
+
+  // Network address
+  getNetworkAddressinInt() { return (this.base & this.getCIDRinInt()) >>> 0; }
+  getNetworkAddressinDecimal() { return this.intToDecimal(this.getNetworkAddressinInt()); }
+  getNetworkAddressinHexadecimal() { return this.intToHexdecimal(this.getNetworkAddressinInt()); }
+  getNetworkAddressinBinary() { return this.intToBinary(this.getNetworkAddressinInt()); }
+
+  // Broadcast address
+  getBroadcastAddressinInt() { return (this.base | ~this.getCIDRinInt()) >>> 0; }
+  getBroadcastAddressinDecimal() { return this.intToDecimal(this.getBroadcastAddressinInt()); }
+  getBroadcastAddressinHexadecimal() { return this.intToHexdecimal(this.getBroadcastAddressinInt()); }
+  getBroadcastAddressinBinary() { return this.intToBinary(this.getBroadcastAddressinInt()); }
+
+
+  intToDecimal(int) { return [24, 16, 8, 0].map(shift => (int >>> shift) & 0xFF); }
+  intToHexdecimal(int) { return int.toString(16).padStart(8, '0').match(/.{2}/g); }
+  intToBinary(int) { return int.toString(2).padStart(32, '0').match(/.{4}/g); }
+
+  consoleOutput() {
+    console.log(`IPv4: ${this.getIPinInt()}`);
+    console.log(`\tDecimal: ${this.getIPinDecimal().join('.')} /${this.getCIDRinDecimal()}`);
+    console.log(`\tHexdecimal: ${this.getIPinHexadecimal().join(':')}`);
+    console.log(`\tBinary: ${this.getIPinBinary().join(' ')}`);
+
+    console.log(`CIDR: ${this.getCIDRinInt()}`);
+    console.log(`\tDecimal: ${this.getCIDRinDecimal()}`);
+    console.log(`\tHexdecimal: ${this.getCIDRinHexadecimal().join(':')}`);
+    console.log(`\tBinary: ${this.getCIDRinBinary().join(' ')}`);
+
+    console.log(`Network Address: ${this.getNetworkAddressinInt()}`);
+    console.log(`\tDecimal: ${this.getNetworkAddressinDecimal().join('.')}`);
+    console.log(`\tHexdecimal: ${this.getNetworkAddressinHexadecimal().join(':')}`);
+    console.log(`\tBinary: ${this.getNetworkAddressinBinary().join(' ')}`);
+
+    console.log(`Broadcast Address: ${this.getBroadcastAddressinInt()}`);
+    console.log(`\tDecimal: ${this.getBroadcastAddressinDecimal().join('.')}`);
+    console.log(`\tHexdecimal: ${this.getBroadcastAddressinHexadecimal().join(':')}`);
+    console.log(`\tBinary: ${this.getBroadcastAddressinBinary().join(' ')}`);
+  }
+}
+
+class Subnet {
+  constructor(base, cidrs) {
+    this.base = base;
+    if (Array.isArray(cidrs)) {
+      this.cidrs = cidrs;
+    } else {
+      this.cidrs = this.generateRandomCIDRs(32 - this.base.getCIDRinDecimal());
+    }
+    this.cidrs.sort((a, b) => b - a);
+  }
+  getNetworkAddressfromSubnet() { return this.calculateSubnetIP(); }
+  getCIDRs(){ return this.cidrs; }
+  getSubAddresses(){ return this.calculateSubnetIP(); }
+  getSuperAddress() { return this.findCommonIPv4(); }
+
+  generateRandomCIDRs(startCIDR) {
+    return Array(Math.floor(Math.random() * 6) + 2)
+      .fill(0)
+      .reduce(
+        (acc, _, id) => {
+          if (acc.remainingIPs == 0)
+            return acc;
+          let maxClientsCIDR = Math.floor(Math.log2(acc.remainingIPs));
+          if (maxClientsCIDR < 2)
+            return acc;
+          if (id == 0)
+            if (Math.pow(2, maxClientsCIDR) == acc.remainingIPs)
+              maxClientsCIDR -= 1;
+          const randomCIDR = Math.min(
+            Helper.generateWeightedSequenze(1, 7, 1.005)[0] + 3, 
+            Helper.generateWeightedSequenze(1, maxClientsCIDR - 2, 0.6)[0] + 2);
+          acc.remainingIPs -= Math.pow(2, randomCIDR);
+          acc.result.push(randomCIDR);
+          return acc;
+        },
+        {
+          result: [],
+          remainingIPs: Math.pow(2, startCIDR)
+        }
+      )
+      .result
+  }
+  calculateSubnetIP() {
+    const result = this.cidrs.reduce((acc, cidr) => {
+      const ipv4 = new IPv4(acc.currentIP.getNetworkAddressinInt(), 32 - cidr);
+      acc.result.push(
+        {
+          ipv4: new IPv4(ipv4.getNetworkAddressinInt(), 32 - cidr),
+          hosts: Math.floor(Math.pow(2, cidr-1) * (Math.random() * 0.5 + 1.3))
+        });
+      acc.currentIP = new IPv4(ipv4.getBroadcastAddressinInt() + 1, 32 - cidr);
+      return acc
+    }, {
+      currentIP: this.base,
+      result: []
+    })
+      .result
+      .sort((a,b) => b.hosts - a.hosts);
+    this.calculateSubnetIP = () => result; // Cache the result for future calls
+    return result;
+  }
+  findCommonIPv4(addrs) {
+    addrs = this.calculateSubnetIP().map(sub => sub.ipv4.getIPinInt());
+    let cidr = 32;
+    let result = addrs[0];
+    for (let i = 1; i < addrs.length; i++) {
+      while (((result >>> (32 - cidr)) !== (addrs[i] >>> (32 - cidr))) && cidr > 0) {
+        cidr--;
+      }
+    }
+    const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+    const base = (result & mask) >>> 0;
+    result = new IPv4(base, cidr);
+    this.findCommonIPv4 = () => result; // Cache the result for future calls
+    return result;
+  }
+  consoleOutput() {
+    console.log(`Subnet base: ${this.base.getIPinDecimal().join('.')} / ${this.base.getCIDRinDecimal()}`);
+    console.log(`Subnet cidrs: ${this.cidrs.join(', ')}`);
+    this.getNetworkAddressfromSubnet().forEach(
+      (ipv4, index) => {
+        console.log(`Subnet ${index + 1}: ${ipv4.getIPinDecimal().join('.')} / ${ipv4.getCIDRinDecimal()}`);
+      }
+    );
+    console.log(`Common prefix: ${this.findCommonIPv4().getIPinDecimal().join('.')} / ${this.findCommonIPv4().getCIDRinDecimal()  }`);
+  }
+}
+
+class HtmlRenderer {
+  constructor(helpField = false, help = false) {
+    this.mainContainer = document.getElementById("main");
+    this.help = false;
+    this.helpField = false;
+  }
+
+  createArticle() {
+    return document.getElementById("article").content.cloneNode(true);
+  }
+
+  createArticle_network_infos({ base, subnet }, subnetType) {
+    const article = this.createArticle();
+    article.querySelector(".article_header").innerHTML = "Network Infos:";
+    const contentContainer = article.querySelector(".article_content");
+
+    const first = new IPv4(
+      base.getNetworkAddressinInt() + 1,
+      base.getCIDRinDecimal()
+    );
+    const last = new IPv4(
+      base.getBroadcastAddressinInt() - 1,
+      base.getCIDRinDecimal()
+    )
+
+
+    const matrix = [];
+
+    matrix.push([{ colspan: 5, content: 'IP:' }]);
+    matrix.push(['Dec', ...base.getIPinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...base.getIPinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...base.getIPinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getIPinBinary()]);
+
+    matrix.push([{ colspan: 5, content: 'Mask/CIDR:' }]);
+    matrix.push(['', { colspan: 2, content: this.createInput(base.getCIDRinDecimal(), 'normal') }]);
+    if (this.help) matrix.push(['', { colspan: 2, content: base.getCIDRinDecimal() },]);
+    matrix.push(['Dec', ...base.getCIDRinDec().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getCIDRinDec().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...base.getCIDRinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getCIDRinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...base.getCIDRinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getCIDRinBinary()]);
+
+    matrix.push([{ colspan: 5, content: 'Network Address:' }]);
+    matrix.push(['Dec', ...base.getNetworkAddressinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.help) matrix.push(['', ...base.getNetworkAddressinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...base.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...base.getNetworkAddressinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getNetworkAddressinBinary()]);
+
+    matrix.push([{ colspan: 5, content: 'Broadcast Address:' }]);
+    matrix.push(['Dec', ...base.getBroadcastAddressinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.help) matrix.push(['', ...base.getBroadcastAddressinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...base.getBroadcastAddressinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getBroadcastAddressinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...base.getBroadcastAddressinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...base.getBroadcastAddressinBinary()]);
+
+
+    matrix.push([{ colspan: 5, content: 'Range:' }]);
+    matrix.push(['Dec', ...first.getIPinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.help) matrix.push(['', ...first.getIPinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    matrix.push(['Dec', ...last.getIPinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.help) matrix.push(['', ...last.getIPinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+
+    matrix.push([{ colspan: 5, content: 'Clients:' }]);
+    matrix.push([
+      '',
+      { colspan: 2, content: this.createInput(last.getIPinInt() - first.getIPinInt() + 1, 'normal') },
+      { colspan: 2, content: '<=>' },
+      { colspan: 2, content: this.createInput(32 - base.getCIDRinDecimal(), 'normal') }
+    ]);
+    if (this.help) matrix.push([
+      '',
+      { colspan: 2, content: last.getIPinInt() - first.getIPinInt() + 1 },
+      { colspan: 2, content: '' },
+      { colspan: 2, content: `2^(${32 - base.getCIDRinDecimal()})-2` }
+
+    ]);
+
+    contentContainer.appendChild(this.createTable(matrix));
+    return article;
+  }
+
+  createArticle_subnet({ base, subnet }, subnetType) {
+    const article = this.createArticle();
+    article.querySelector(".article_header").innerHTML = "Sub Netting:";
+    const contentContainer = article.querySelector(".article_content");
+
+    let matrix = [];
+    matrix.push([{
+      colspan: 7,
+      content: Helper.shuffleArray(
+        subnet.getSubAddresses().map(sub => sub.hosts)
+      ).join(', ')
+    }]);
+    matrix.push({
+      isHeader: true, content: [
+        '',
+        'clients',
+        'hosts',
+        'okt1',
+        'okt2',
+        'okt3',
+        'okt4',
+        'cidr',
+      ]
+    });
+    subnet.getSubAddresses().forEach((address, id) => {
+      matrix.push([
+        `Lan ${id + 1}`,
+        this.createInput(address.hosts, 'bin'),
+        this.createInput(Math.pow(2, 32 - address.ipv4.getCIDRinDecimal()), 'bin'),
+        ...address.ipv4.getNetworkAddressinDecimal().map(dec => this.createInput(dec, 'bin')),
+        this.createInput(address.ipv4.getCIDRinDecimal(), 'bin'),
+      ]);
+      if (this.help)
+        matrix.push([
+          '',
+          address.hosts,
+          Math.pow(2, 32 - address.ipv4.getCIDRinDecimal()),
+          ...address.ipv4.getNetworkAddressinDecimal(),
+          address.ipv4.getCIDRinDecimal(),
+        ]);
+
+      if (this.helpField) matrix.push(['Hex', ...address.ipv4.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+      if (this.helpField) if (this.help) matrix.push(['', ...address.ipv4.getNetworkAddressinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+      if (this.helpField) matrix.push(['Bin', ...address.ipv4.getNetworkAddressinBinary().map(bin => this.createInput(bin, 'bin'))]);
+      if (this.helpField) if (this.help) matrix.push(['', ...address.ipv4.getNetworkAddressinBinary()]);
+    });
+    contentContainer.appendChild(this.createTable(matrix));
+
+    matrix = [];
+
+    matrix.push([{ colspan: 5, content: 'Super Address:' }]);
+    matrix.push(['Dec', ...subnet.getSuperAddress().getIPinDecimal().map(dec => ({ colspan: 2, content: this.createInput(dec, 'dec') }))]);
+    if (this.help) matrix.push(['', ...subnet.getSuperAddress().getIPinDecimal().map(dec => ({ colspan: 2, content: dec }))]);
+    if (this.helpField) matrix.push(['Hex', ...subnet.getSuperAddress().getCIDRinHexadecimal().map(hex => ({ colspan: 2, content: this.createInput(hex, 'hex') }))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...subnet.getSuperAddress().getCIDRinHexadecimal().map(hex => ({ colspan: 2, content: hex }))]);
+    if (this.helpField) matrix.push(['Bin', ...subnet.getSuperAddress().getCIDRinBinary().map(bin => this.createInput(bin, 'bin'))]);
+    if (this.helpField) if (this.help) matrix.push(['', ...subnet.getSuperAddress().getCIDRinBinary()]);
+
+    matrix.push([{ colspan: 5, content: 'CIDR:' }]);
+    matrix.push(['', { colspan: 2, content: this.createInput(subnet.getSuperAddress().getCIDRinDecimal(), 'normal') }]);
+    if (this.help) matrix.push(['', { colspan: 2, content: subnet.getSuperAddress().getCIDRinDecimal() },]);
+
+
+    contentContainer.appendChild(this.createTable(matrix));
+    return article;
+  }
+
+  createAList({ base, subnet }, subnetType) {
+    const article = this.createArticle();
+    article.querySelector(".article_header").innerHTML = "Binary list:";
+    const contentContainer = article.querySelector(".article_content");
+
+    const first = new IPv4(
+      base.getNetworkAddressinInt() + 1,
+      base.getCIDRinDecimal()
+    );
+    const last = new IPv4(
+      base.getBroadcastAddressinInt() - 1,
+      base.getCIDRinDecimal()
+    )
+
+    let matrix = []
+
+    matrix.push(['IP', ...base.getIPinBinary()]);
+    matrix.push(['mask', ...base.getCIDRinBinary()]);
+    matrix.push(['net', ...base.getNetworkAddressinBinary()]);
+    matrix.push(['BC', ...base.getBroadcastAddressinBinary()]);
+    matrix.push(['first', ...first.getIPinBinary()]);
+    matrix.push(['last', ...last.getIPinBinary()]);
+
+
+    subnet.getSubAddresses().forEach((address, id) => {
+      matrix.push([`lan ${id + 1}`, ...address.ipv4.getIPinBinary()]);
+    })
+
+    
+    matrix.push(['super', ...subnet.getSuperAddress().getIPinBinary()]);
+
+    contentContainer.appendChild(this.createTable(matrix));
+    return article;
+  }
+
+  createTable(matrix) {
+    const table = document.createElement('table');
+    matrix.forEach((matrix_row) => {
+      const row = document.createElement('tr');
+      const isHeader = false;
+      if (!Array.isArray(matrix_row)) {
+        if (matrix.isHeader !== undefined)
+          isHeader = true;
+        matrix_row = matrix_row.content;
+      }
+      table.appendChild(row);
+      matrix_row.forEach((matrix_cell) => {
+        let cell;
+        if (isHeader)
+          cell = document.createElement('th');
+        else
+          cell = document.createElement('td');
+        if (typeof matrix_cell === 'string' || typeof matrix_cell === 'number') {
+          cell.innerHTML = matrix_cell;
+        } else if (typeof matrix_cell.content === 'string' || typeof matrix_cell.content === 'number') {
+          cell.innerHTML = matrix_cell.content;
+        } else {
+          if (matrix_cell.content === undefined) {
+            cell.appendChild(matrix_cell)
+          } else {
+            cell.appendChild(matrix_cell.content)
+          }
+        }
+        if (matrix_cell.colspan !== undefined)
+          cell.setAttribute('colspan', matrix_cell.colspan)
+        row.appendChild(cell);
+      })
+    })
+    return table;
+  }
+
+  createInput(value, className = '') {
+    const len =
+      className === 'bin' ? 4 :
+        className === 'hex' ? 2 :
+          className === 'hex' ? 3 :
+            10;
+    const input = document.createElement('input');
+    if (typeof className === 'string' && className !== '') {
+      input.classList.add(className);
+    } else if (Array.isArray(className) && className.length > 0) {
+      className.forEach(cN => {
+        if (typeof cN === 'string' && cN !== '')
+          input.classList.add(cN);
+      });
+    }
+    input.maxLength = len;
+    input.autocomplete = "off";
+    input.addEventListener('keyup', (ev) => {
+      const shouldValue = value.toString()
+      input.classList.remove('answerTrue', 'answerFalse')
+      if (input.value === shouldValue)
+        input.classList.add('answerTrue')
+      else if (input.value != '' && input.value != shouldValue)
+        input.classList.add('answerFalse')
+    })
+    return input;
+  }
+
+  render(template) {
+    const card = document.getElementById("card").content.cloneNode(true);;
+    card.querySelector(".card_header").innerHTML = template.header;
+    template.content.forEach(element => {
+      card.querySelector(".card_content").appendChild(element);
+    });
+    this.mainContainer.appendChild(card);
+  }
+}
+
+const Helper = {
+  shuffleArray:(arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+  },
+  generateWeightedSequenze: (length, maxValue, factor = 2) =>{
+    const weights = Array.from({ length: maxValue + 1 }, (_, i) => Math.pow(factor, maxValue - i))
+    const totalWeight = weights.reduce((a, b) => a + b, 0)
+    function weightedRandom() {
+      let r = Math.random() * totalWeight;
+      for (let i = 0; i < weights.length; i++) {
+        r -= weights[i]
+        if (r <= 0) return i;
+      }
+      return weights.length - 1;
+    }
+    return Array.from({ length }, () => weightedRandom())
+  }
+}
+
+function main() {
+  const htmlRenderer = new HtmlRenderer(true,TransformStreamDefaultController);
+  const exercise_list = [
+    ...Array(25).fill(0).map(() => {
+      const base = new IPv4(
+        Math.floor(Math.random() * Math.pow(2, 32)),
+        Math.floor(Math.random() * 22) + 5
+      );
+      const subnet = new Subnet(base);
+      return { base, subnet };
+    })
+  ];
+
+  // exercise_list[0] = {...exercise_list[0], base: ipv4(223.124.115.63)}
+
+  let help = htmlRenderer.help;
+  let helpField = htmlRenderer.helpField;
+  exercise_list.forEach(({ base, subnet }, id) => {
+    const subnetType = Math.floor(Math.random() * 2) === 0;
+    const header = `
+        <div class="title">IPv4 Subnet ${id + 1}</div>
+        <div>
+        ${base.getIPinDecimal().join('.')} 
+          ${subnetType ?
+        '/' + base.getCIDRinDecimal() :
+        '&nbsp;&nbsp;&nbsp;' + base.getCIDRinDec().join('.')
+      }
+        </div>
+      `;
+
+    if(id===0){
+      htmlRenderer.help = true;
+      htmlRenderer.helpField = true;
+    }else if(id===1){
+      htmlRenderer.help = help;
+    }else{
+      htmlRenderer.helpField = helpField;
+    }
+    const content = [
+      htmlRenderer.createArticle_network_infos({ base, subnet }, subnetType),
+      htmlRenderer.createArticle_subnet({ base, subnet }, subnetType),
+    ];
+    if(id===0)
+        content.push(htmlRenderer.createAList({ base, subnet }, subnetType))
+    htmlRenderer.render({
+      header,
+      content
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", main);
+</script>
 
 </html>
