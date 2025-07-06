@@ -88,3 +88,24 @@ input.none::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.binary_lan{
+    background-color: lime;
+}
+.binary_host{
+    background-color: aqua;
+}
+.dec{
+    background-color: rgb(255, 162, 255);
+}
+
+table{
+    margin-top: 1rem;
+}
+table tr th:first-of-type,
+table tr td:first-of-type {
+    padding-right: 1rem;
+}
+table tr td:nth-of-type(n+2) {
+    text-align: right;
+}

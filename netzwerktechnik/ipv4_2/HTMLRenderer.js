@@ -1,13 +1,21 @@
 export class HTMLRenderer {
-    static getaDot(){
+    static getaDot() {
         const dot = document.createElement('span');
         dot.innerText = '.';
         return dot;
     }
-    static getaSlash(){
+    static getaSlash() {
         const slash = document.createElement('span');
         slash.innerText = '/';
         return slash;
+    }
+    static getaLine() {
+        const container = document.createElement('div');
+        const content = document.createElement('div');
+        content.classList.add('shortBlock');
+        container.classList.add('shortLine');
+        container.appendChild(content);
+        return { container, content };
     }
     static simpleHash() {
         return (Math.floor(Math.random() * Math.pow(2, 32) + Math.pow(2, 32))).toString();
@@ -16,6 +24,10 @@ export class HTMLRenderer {
     static createTabList(tabList) {
         const tabContainer = new TabList(tabList);
         return tabContainer.render();
+    }
+
+    static createTable(matrix) {
+        return new Table(matrix);
     }
 }
 class TabList {
@@ -80,5 +92,62 @@ class TabList {
         container.appendChild(contentPart);
         return container;
 
+    }
+}
+class Table {
+    constructor(matrix) {
+        this.matrix = matrix;
+    }
+    createCell(cell, isHeader) {
+        const cellElement = document.createElement(isHeader ? 'th' : 'td');
+
+
+        if (typeof cell === 'string' || typeof cell === 'number') {
+            cellElement.innerText = cell;
+        } else if (cell.content === undefined) {
+            cellElement.appendChild(cell)
+        } else if (typeof cell.content === 'string' || typeof cell.content === 'number') {
+            cellElement.innerText = cell.content;
+        } else {
+            cellElement.appendChild(cell.content)
+        }
+
+        if (cell.colspan !== undefined)
+            cellElement.setAttribute('colspan', cell.colspan);
+        
+        if (cell.classnames !== undefined)
+            cell.classnames.forEach(classname=>cellElement.classList.add(classname))
+
+        return cellElement;
+    }
+    createRow(row) {
+        const rowElement = document.createElement('tr');
+
+        let isHeader = false;
+        let content;
+
+        if (!Array.isArray(row)) {
+            content = row.content
+            if (row.isHeader !== undefined)
+                isHeader = true;
+        } else
+            content = row;
+
+        content.forEach(cell => {
+            const cellElement = this.createCell(cell, isHeader);
+            rowElement.appendChild(cellElement);
+        });
+
+        return rowElement;
+    }
+
+    render() {
+        const table = document.createElement('table');
+
+        this.matrix.forEach(row => {
+            table.appendChild(this.createRow(row))
+        });
+
+        return table;
     }
 }
