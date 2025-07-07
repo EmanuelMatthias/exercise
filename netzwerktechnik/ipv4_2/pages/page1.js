@@ -10,7 +10,7 @@ export class Page_1 {
     inputCounter = 1;
 
     // ipv4 = new IPv4(2130706433, 24);
-    ipv4 = new IPv4(3232238095, 29);
+    ipv4 = new IPv4(3232238095, 20);
     ipv4_maskAddress = new IPv4(this.ipv4.getCIDRinInt(), this.ipv4.getCIDRinDecimal());
     ipv4_netAddress = new IPv4(this.ipv4.getNetworkAddressinInt(), this.ipv4.getCIDRinDecimal());
     ipv4_broadcastAddress = new IPv4(this.ipv4.getBroadcastAddressinInt(), this.ipv4.getCIDRinDecimal());
@@ -81,6 +81,7 @@ export class Page_1 {
 
     createBinaryBlock() {
         // mask
+
         const network_lan_binary = this.binding.addBinding('pre', () => {
             const { lan } = IPv4.splitBinary_netHostbyCidr(this.ipv4_maskAddress);
             return lan.join(' ');
@@ -88,15 +89,9 @@ export class Page_1 {
         network_lan_binary.classList.add('binary_lan');
         const network_host_binary = this.binding.addBinding('pre', () => {
             const { host } = IPv4.splitBinary_netHostbyCidr(this.ipv4_maskAddress);
-            return host.length === 0 ? '' : ` ${host.join(' ')}`;
+            return host.length === 0 ? '' : `${host[0].length===4?' ':''}${host.join(' ')}`;
         });
         network_host_binary.classList.add('binary_host');
-        const network_dec = [
-            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[0]),
-            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[1]),
-            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[2]),
-            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[3]),
-        ];
 
         // IP
         const ip_lan_binary = this.binding.addBinding('pre', () => {
@@ -106,16 +101,10 @@ export class Page_1 {
         ip_lan_binary.classList.add('binary_lan');
         const ip_host_binary = this.binding.addBinding('pre', () => {
             const { host } = IPv4.splitBinary_netHostbyCidr(this.ipv4);
-            return host.length === 0 ? '' : ` ${host.join(' ')}`;
+            return host.length === 0 ? '' : `${host[0].length===4?' ':''}${host.join(' ')}`;
         });
         ip_host_binary.classList.add('binary_host');
         network_host_binary.classList.add('binary_host');
-        const ip_dec = [
-            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[0]),
-            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[1]),
-            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[2]),
-            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[3]),
-        ];
 
         // Network
         const net_lan_binary = this.binding.addBinding('pre', () => {
@@ -125,15 +114,9 @@ export class Page_1 {
         net_lan_binary.classList.add('binary_lan');
         const net_host_binary = this.binding.addBinding('pre', () => {
             const { host } = IPv4.splitBinary_netHostbyCidr(this.ipv4_netAddress);
-            return host.length === 0 ? '' : ` ${host.join(' ')}`;
+            return host.length === 0 ? '' : `${host[0].length===4?' ':''}${host.join(' ')}`;
         });
         net_host_binary.classList.add('binary_host');
-        const net_dec = [
-            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[0]),
-            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[1]),
-            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[2]),
-            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[3]),
-        ];
 
         // Broadcast
         const broadcast_lan_binary = this.binding.addBinding('pre', () => {
@@ -143,7 +126,7 @@ export class Page_1 {
         broadcast_lan_binary.classList.add('binary_lan');
         const broadcast_host_binary = this.binding.addBinding('pre', () => {
             const { host } = IPv4.splitBinary_netHostbyCidr(this.ipv4_broadcastAddress);
-            return host.length === 0 ? '' : ` ${host.join(' ')}`;
+            return host.length === 0 ? '' : `${host[0].length===4?' ':''}${host.join(' ')}`;
         });
         broadcast_host_binary.classList.add('binary_host');
         const broadcast_dec = [
@@ -153,44 +136,38 @@ export class Page_1 {
             this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinDecimal()[3]),
         ];
 
-        const matrix = [
+        const matrix_binary = [
             {
                 isHeader: true,
                 content: [
                     '',
                     { classnames: ['binary_lan'], content: 'Lan' },
                     { classnames: ['binary_host'], content: 'Host' },
-                    { colspan: 4, classnames: ['dec'], content: 'in Dec' }
                 ]
             },
             [
                 'mask',
                 network_lan_binary,
                 network_host_binary,
-                ...network_dec.map(a => ({ classnames: ['dec'], content: a }))
             ],
             [
                 'IP',
                 ip_lan_binary,
                 ip_host_binary,
-                ...ip_dec.map(a => ({ classnames: ['dec'], content: a }))
             ],
             [
                 'Network',
                 net_lan_binary,
                 net_host_binary,
-                ...net_dec.map(a => ({ classnames: ['dec'], content: a }))
             ],
             [
                 'Broadcast',
                 broadcast_lan_binary,
                 broadcast_host_binary,
-                ...broadcast_dec.map(a => ({ classnames: ['dec'], content: a }))
-            ]
+            ],
         ];
 
-        const table = HTMLRenderer.createTable(matrix);
-
+        const table = HTMLRenderer.createTable(matrix_binary);
         this.page_content.appendChild(table.render());
     }
     updateValues() {
@@ -218,13 +195,113 @@ export class Page_1 {
         }
     }
 
+    createDecimalBlock(){
+        
+        const network_dec = [
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinDecimal()[3]),
+        ];
+        const ip_dec = [
+            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinDecimal()[3]),
+        ];
+        const net_dec = [
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinDecimal()[3]),
+        ];
+        const broadcast_dec = [
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinDecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinDecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinDecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinDecimal()[3]),
+        ];
 
+        
+        const matrix_decimal = [
+            [
+                'mask',
+                ...network_dec.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'IP',
+                ...ip_dec.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'Network',
+                ...net_dec.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'Broadcast',
+                ...broadcast_dec.map(a => ({ classnames: ['dec'], content: a }))
+            ]
+        ];
+        const table = HTMLRenderer.createTable(matrix_decimal);
+        this.page_content.appendChild(table.render());
+    }
+
+    createHexidecimalBlock(){
+        
+        const network_hex = [
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinHexadecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinHexadecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinHexadecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_maskAddress.getIPinHexadecimal()[3]),
+        ];
+        const ip_hex = [
+            this.binding.addBinding('pre', () => this.ipv4.getIPinHexadecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinHexadecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinHexadecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4.getIPinHexadecimal()[3]),
+        ];
+        const net_hex = [
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinHexadecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinHexadecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinHexadecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_netAddress.getIPinHexadecimal()[3]),
+        ];
+        const broadcast_hex = [
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinHexadecimal()[0]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinHexadecimal()[1]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinHexadecimal()[2]),
+            this.binding.addBinding('pre', () => this.ipv4_broadcastAddress.getIPinHexadecimal()[3]),
+        ];
+
+        
+        const matrix_decimal = [
+            [
+                'mask',
+                ...network_hex.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'IP',
+                ...ip_hex.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'Network',
+                ...net_hex.map(a => ({ classnames: ['dec'], content: a }))
+            ],
+            [
+                'Broadcast',
+                ...broadcast_hex.map(a => ({ classnames: ['dec'], content: a }))
+            ]
+        ];
+        const table = HTMLRenderer.createTable(matrix_decimal);
+        this.page_content.appendChild(table.render());
+    }
 
     render() {
         // IP Input
         this.createIPInputLine();
 
-        this.createBinaryBlock()
+        this.createBinaryBlock();
+        this.createDecimalBlock();
+        this.createHexidecimalBlock();
         // let line_cidr_binary = HTMLRenderer.getaLine();
         // const CIDR_binary = this.binding.addBinding('pre', () => this.ipv4.getCIDRinBinary().join('.'));
         // line_cidr_binary.content.appendChild(CIDR_binary);

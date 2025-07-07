@@ -114,9 +114,9 @@ class Table {
 
         if (cell.colspan !== undefined)
             cellElement.setAttribute('colspan', cell.colspan);
-        
+
         if (cell.classnames !== undefined)
-            cell.classnames.forEach(classname=>cellElement.classList.add(classname))
+            cell.classnames.forEach(classname => cellElement.classList.add(classname))
 
         return cellElement;
     }
@@ -127,9 +127,14 @@ class Table {
         let content;
 
         if (!Array.isArray(row)) {
-            content = row.content
+            if (row.content !== undefined)
+                content = row.content;
             if (row.isHeader !== undefined)
                 isHeader = true;
+            if (row.empty === true){
+                content = [];
+                rowElement.classList.add('emptyRow');
+            }
         } else
             content = row;
 
